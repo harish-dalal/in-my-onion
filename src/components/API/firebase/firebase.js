@@ -1,4 +1,4 @@
-import firebase from 'firebase'
+import firebase, { firestore } from 'firebase'
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -16,6 +16,7 @@ class Firebase {
     firebase.initializeApp(firebaseConfig);
 
     this.auth = firebase.auth();
+    this.db = firebase.firestore();
 
     this.uiConfig = {
       // Will use popup for IDP Providers sign-in flow instead of the default, redirect.

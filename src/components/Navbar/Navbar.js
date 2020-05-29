@@ -4,7 +4,7 @@ import './navbar.css';
 function Navbar(){
 	return(
 		<div className = "navbar">
-			<p>hello world this is website to give yur onion</p>
+			<p>hello world this is website to give your onion</p>
 		</div>
 	)
 }
