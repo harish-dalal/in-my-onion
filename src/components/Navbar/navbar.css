@@ -11,5 +11,16 @@
 	align-items: center;
 	flex-direction: row;
 	font-size: 1.2rem;
+	z-index: 100;
 	box-shadow: 0 3px 6px 0 #00000070
+}
+
+
+.navbar p{
+	margin-left: 5%;
+}
+
+.sign-button{
+	margin-left: auto;
+	margin-right: 5%;
 }

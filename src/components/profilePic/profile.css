@@ -1,0 +1,8 @@
+.profile{
+    height: 30px;
+    width: 30PX;
+    /* border-radius: 50%; */
+    background-image: url(../../resources/user.png);
+    background-size: contain;
+
+}

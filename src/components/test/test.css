@@ -1,0 +1,17 @@
+.test{
+    position: relative;
+    top: 60px;
+}
+
+.question{
+    height: 100px;
+    width: 400px;
+    justify-content: start;
+    resize: none;
+}
+
+.tags{
+    height : 50px;
+    width: 300px;
+    resize: none;
+}

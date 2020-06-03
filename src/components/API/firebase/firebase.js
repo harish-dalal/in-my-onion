@@ -21,12 +21,38 @@ class Firebase {
     this.uiConfig = {
       // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
       signInFlow: 'popup',
-      signInSuccessUrl: '<url-to-redirect-to-on-success>',
+      signInSuccessUrl: './',
+      callbacks: {
+        signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+          console.log("HELLO!!!!");
+          console.log(authResult.user)
+          console.log(authResult.user.displayName)
+          console.log(authResult.user.uid);
+          const user = authResult.user
+          if(user.metadata.creationTime !== user.metadata.lastSignInTime) return true;
+          else{
+            this.db.collection('Users').doc(user.uid).set({
+              userid : user.uid,
+              createdDate : firebase.firestore.Timestamp.now(),
+              userName : user.displayName,
+              userProfilePicUrl : user.photoURL,
+              quest : {},
+            }).then(()=>{
+              console.log('successfully added')
+              // window.location.assign('./') 
+            })
+            .catch(error=>{
+              console.log('error in adding ' +error);
+              this.auth.signOut().then(()=>console.log('signed out')).catch(error=>console.log("can't even sign out"))
+            })
+          }
+          return false;
+
+        },
+      },
       signInOptions: [
         // Leave the lines as is for the providers you want to offer your users.
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID
       ],
     }
   }
