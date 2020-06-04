@@ -32,7 +32,7 @@ class Navbar extends Component{
 		if(this.props.location.pathname !== '/signup'){
 			return(
 				<div className = "navbar">
-					<p>hello world this is website to give your onion</p>
+					<p>In My Onion</p>
 					<div className = "sign-button">
 						{
 							this.state.isSignedIn ?

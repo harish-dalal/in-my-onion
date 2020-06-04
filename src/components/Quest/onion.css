@@ -1,12 +1,17 @@
 .onion-box{
     position: relative;
     height: auto;
+    min-height: 30px;
     max-width: 400px;
-    border: 2px solid rgb(146, 141, 141);
+    border: 1px solid rgb(146, 141, 141);
     border-radius: 10px;
-    margin-top: 4px;
+    margin-top: 10px;
     padding: 3px;
     padding-left: 15px;
+    font-size: 1.2rem;
+    display: flex;
+    align-content: center;
+    text-align: center;
 }
 
 .color-box{
@@ -15,7 +20,7 @@
     left : 0;
     background-image : linear-gradient(to right , #0962ff70 , #ff72b4);
     height : 100% ;
-    /* width : 0 ;  */
+    /* width : 10px ;  */
     border-bottom-left-radius : 5px ;
     border-top-left-radius : 5px;
     transition: width 1s;
@@ -25,6 +30,7 @@
     position: relative;
     top: 0;
     margin: 0;
+    align-self: center;
 }
 
 .noselect {

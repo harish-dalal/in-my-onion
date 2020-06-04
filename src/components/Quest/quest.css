@@ -11,11 +11,13 @@ h3{
     margin: 0;
 }
 
-.comment-link:hover{
+.comment-link{
+    margin-top: 3px;
     cursor: pointer;
 }
 
 .up-down{
+    margin-top: 2%;
     display: flex;
     flex-direction: row;
 }
@@ -40,4 +42,27 @@ h3{
           -ms-user-select: none; /* Internet Explorer/Edge */
               user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .profile-box{
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 5px;
+  }
+
+  .profile-box p{
+      font-size: 1rem;
+      margin-left: 6px;
+      margin-top: 0;
+      margin-bottom: 0;
+      color: rgb(68, 68, 68);
+      font-weight: bold;
+  }
+
+  .profile-box .date{
+      margin-bottom: 0;
+      font-size: .8rem;
+      color: darkgrey;
+      font-weight: 500;
   }

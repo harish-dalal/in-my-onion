@@ -24,7 +24,7 @@ class Home extends Component{
             this.setState((prevState) => ({quest : prevState.quest.concat(data)}))
             if(this.state.quest.length === 0){ 
                 console.log('need to refresh')
-                // window.location.reload()
+                window.location.reload()
             }
         })
         .catch(error=> console.log('error in retriveing data from database ' + error))

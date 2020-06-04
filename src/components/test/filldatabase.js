@@ -7,6 +7,7 @@ class AskQuest extends Component{
     constructor(){
         super()
         this.state = {
+            user : {},
             Quest : {
                 title : "",
                 options : [],
@@ -14,8 +15,7 @@ class AskQuest extends Component{
                 downvotes : 0,
                 isAnonymous : false,
                 tags : [],
-                userId : "",
-                userName : "",
+                comments : 0,
             },
             totalAnswers : 0,
         }
@@ -28,7 +28,7 @@ class AskQuest extends Component{
     updateInput(event){
         const name = event.target.name
         const value = event.target.value;   
-        this.setState((prevState)=>({Quest : {...prevState.Quest , ...{[name] : value}}}));
+        this.setState((prevState)=>({Quest : {...prevState.Quest , ...{[name] : (value === 'true' ? true : value)}}}));
     }
 
     updateInputArray(event){
@@ -51,7 +51,7 @@ class AskQuest extends Component{
 
         let id;
         this.context.db.collection('Quest')
-        .add({...this.state.Quest , ...{timeStamp : firebase.firestore.Timestamp.now()}})
+        .add({...this.state.Quest , ...{timeStamp : firebase.firestore.Timestamp.now()} , ...{user : {userId : this.state.user.uid, userName : this.state.user.displayName, userProfilePicUrl : this.state.user.photoURL}}})
         .then((snap)=>{ 
             this.context.db.collection('Quest').doc(snap.id).collection('quest_data').doc('ans' + snap.id)
             .set({...{totalAnswers : this.state.totalAnswers} ,...{answers : new Array(this.state.Quest.options.length).fill(0)},
@@ -61,8 +61,13 @@ class AskQuest extends Component{
             .catch(error=> console.log('error in answers' + error))
         })
         .catch(error=> console.log('error in submitting ' + error));
-        
-        
+    }
+
+    componentDidMount(){
+        this.context.auth.onAuthStateChanged(u=>{
+            if(u!=null) this.setState({user :  u});
+            else this.setState({user : null});
+        })
     }
 
     render(){
@@ -87,8 +92,9 @@ class AskQuest extends Component{
                     <label htmlFor="true">True</label>
                 </div><br/> 
                 <textarea className='tags' type='text' placeholder ='tags' name='tags' onChange={this.updateInputArray}/><br/>
-                <input type='text' placeholder = "userId" name='userId' value = {user ? this.context.auth.currentUser.uid : 'sign in'} onChange={this.updateInput}/><br/>
-                <input type='text' placeholder = "userName" name='userName' value = {user ? this.context.auth.currentUser.displayName : 'sign in'} onChange={this.updateInput}/><br/><br/>
+                <input type='text' placeholder = "userId" name='userId' value = {this.state.user ? this.state.user.uid : 'sign in'} onChange={this.updateInput}/><br/>
+                <input type='text' placeholder = "userName" name='userName' value = {this.state.user ? this.state.user.displayName : 'sign in'} onChange={this.updateInput}/><br/>
+                <input type='text' placeholder = "profileurl" name='profilePicUrl' value = {this.state.user ? this.state.user.photoURL : 'sign in'} onChange={this.updateInput}/><br/><br/>
                 <button type = 'submit'>Submit</button>
             </form>
             </div>

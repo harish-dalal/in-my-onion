@@ -1,0 +1,25 @@
+.comment-box p{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.profile-box-comment{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.profile-box-comment p{
+    font-size: .8rem;
+    margin-left: 6px;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: rgb(68, 68, 68);
+    font-weight: bold;
+}
+
+.profile-box-comment .date{
+    font-size: .7rem;
+    color: darkgrey;
+    font-weight: 500;
+}
