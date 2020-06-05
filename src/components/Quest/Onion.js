@@ -13,7 +13,7 @@ const Onion = (props)=>{
 
     return(
         <div className = "onion-box" style = {props.ind === props.ans ? {borderColor : '#8a0707', borderWidth : '2px'} : {borderColor : 'rgb(82, 81, 81)'}} onClick = {()=>props.setOnion(props.ind)}>
-            <div className = 'color-box' style = {{width : wid}}></div>
+            <div className = 'color-box' style = {wid == '100%' ? {borderTopRightRadius : '7px' , borderBottomRightRadius : '7px' , width : wid} : {width : wid}}></div>
             <p className = 'noselect'>{props.onion}</p>
         </div>
     )

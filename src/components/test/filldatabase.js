@@ -51,7 +51,7 @@ class AskQuest extends Component{
 
         let id;
         this.context.db.collection('Quest')
-        .add({...this.state.Quest , ...{timeStamp : firebase.firestore.Timestamp.now()} , ...{user : {userId : this.state.user.uid, userName : this.state.user.displayName, userProfilePicUrl : this.state.user.photoURL}}})
+        .add({...this.state.Quest , ...{timeStamp : firebase.firestore.Timestamp.now()} , ...{user : {userId : this.state.user.uid, userName : this.state.user.displayName, userProfilePicUrl : this.state.user.photoURL}} , ...{totalComments : 0}})
         .then((snap)=>{ 
             this.context.db.collection('Quest').doc(snap.id).collection('quest_data').doc('ans' + snap.id)
             .set({...{totalAnswers : this.state.totalAnswers} ,...{answers : new Array(this.state.Quest.options.length).fill(0)},

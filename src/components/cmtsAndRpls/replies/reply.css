@@ -1,0 +1,40 @@
+.up-down-reply{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.up-down-reply p{
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+.reply-box{
+    font-size: .9rem;
+}
+.reply-box p{
+    margin-top: 2px !important;
+}
+
+.profile-box-reply{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.profile-box-reply p{
+    font-size: .75rem;
+    margin-left: 6px;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: rgb(68, 68, 68);
+    font-weight: bold;
+}
+
+.profile-box-reply .date{
+    font-size: .7rem;
+    color: darkgrey;
+    font-weight: 500;
+}

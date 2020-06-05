@@ -1,13 +1,13 @@
 import React , {Component} from 'react'
-import { FirebaseContext } from '../API/firebase'
-import AddComment from './AddComment'
+import { FirebaseContext } from '../../API/firebase'
+import AddComment from '../AddComment'
 import Comnt from './Comnt'
 
 class Comments extends Component{
     constructor(props){
-        super(props)
+        super(props) 
+        //props => questId
         this.state = {
-            isSignedIn : false,
             comments : []
         }
     }
@@ -32,11 +32,10 @@ class Comments extends Component{
     render(){
         return(
             <div>
-                <AddComment questId = {this.props.questId}/><br/>
                 <div>
                     {
                         this.state.comments.map(comment=>{
-                            return (<Comnt data = {comment} key={comment.commentId}/>)
+                            return (<Comnt data = {comment} key={comment.commentId} questId = {this.props.questId}/>)
                         })
                     }
                 </div>

@@ -21,8 +21,8 @@
     background-image : linear-gradient(to right , #0962ff70 , #ff72b4);
     height : 100% ;
     /* width : 10px ;  */
-    border-bottom-left-radius : 5px ;
-    border-top-left-radius : 5px;
+    border-bottom-left-radius : 7px ;
+    border-top-left-radius : 7px;
     transition: width 1s;
 }
 

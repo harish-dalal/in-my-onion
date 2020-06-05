@@ -1,18 +1,21 @@
 import React , {Component} from 'react'
 import Onion from './Onion'
-import Comments from '../comments/Comments'
+import Comments from '../cmtsAndRpls/comments/Comments'
 import Profile from '../profilePic/ProfilePic'
+import AddComment from '../cmtsAndRpls/AddComment'
 import './quest.css'
 import { FirebaseContext } from '../API/firebase'
 
 class Quest extends Component{
     constructor(props){
         super(props)
+        //props =>  data(quest data) , signed(bool) , key(questId)
         this.state = {
             showAnswer : false,
             viewAnswer : false,
             showComments : false,
             index : -1,
+            addComment : false,
             questData : {
                 answers : [],
                 male : [],
@@ -48,12 +51,18 @@ class Quest extends Component{
         // }
     }
 
+    addCommentToggle(){
+        this.setState(prevState =>({addComment : !prevState.addComment}))
+    }
+
     ansClicked(ind){
         if(ind === this.state.index) return;
         
 
         let ref = this.context.db.collection('Quest').doc(this.props.data.questId)
                     .collection('quest_data').doc('ans' + this.props.data.questId)
+        
+        console.log('wait...')
         
         return this.context.db.runTransaction(trans=>{
             return trans.get(ref).then(doc=>{
@@ -69,8 +78,8 @@ class Quest extends Component{
                 let user = this.context.auth.currentUser.uid
                 trans.set(ref , {answers : answerArray , totalAnswers : totatAns , users : {[user] : ind} }, {merge : true})
             })
-        }).then(()=>console.log('success in transaction'))
-        .catch(error => console.log('error in transaction ' + error))
+        }).then(()=>console.log('success in transaction done'))
+        .catch(error => console.log('error in transaction done ' + error))
 
     }
 
@@ -132,15 +141,20 @@ class Quest extends Component{
                     <div className = 'view-answer noselect' onClick = {this.answerToggle.bind(this)}>{this.state.viewAnswer ? 'Hide Onions' : 'View Onions'}</div>
                 </div>
 
-                <div className = "comment-link noselect" onClick = {this.commentToggle.bind(this)}>
-                    {this.state.showComments ? 'Hide Comments' : 'Show Comments'}
+                <div style = {{display : 'flex' , flexDirection : 'row'}}><div className = "comment-link noselect" onClick = {this.commentToggle.bind(this)}>
+                    {this.state.showComments ? 'Hide ': 'Show '}{this.props.data.totalComments} comments
                 </div>
+                <div className = 'add-comment noselect' onClick = {this.addCommentToggle.bind(this)}>Comment</div></div>
 
+                {this.state.addComment ?
+                    <div><AddComment questId = {this.props.data.questId} type = {'comment'}/><br/></div>
+                    : null
+                }
                 {this.state.showComments ? 
                     (
                         <Comments questId = {this.props.data.questId}/>
                     )    
-                    : ""
+                    : null
                 }
             </div>
         )
