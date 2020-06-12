@@ -49,3 +49,12 @@
     margin-right: 5%;
     cursor: pointer;
 }
+
+.delete-button{
+    height: 15px;
+    width: 15px;    
+    margin-left: 20px;
+    cursor: pointer;
+    background-image: url('../../../resources/trash.png');
+    background-size: contain;
+}

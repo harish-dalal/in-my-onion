@@ -1,6 +1,9 @@
 import React , { Component } from 'react'
 import { FirebaseContext } from '../API/firebase'
 import Quest from '../Quest/Quest'
+import Addquest from '../addQuestion/Addquest'
+import FollowAndFeed from '../comingSoon/FollowAndFeed'
+import Ghost from '../ghostscreen/GhostScreen'
 import './home.css'
 
 class Home extends Component{
@@ -9,6 +12,7 @@ class Home extends Component{
         this.state = {
             quest : [],
             isSignedIn : false,
+            user : {},
         }
     }
 
@@ -30,12 +34,13 @@ class Home extends Component{
         .catch(error=> console.log('error in retriveing data from database ' + error))
     }
 
-   
 
     componentDidMount(){
-        this.context.auth.onAuthStateChanged(user=>{
-            if(user!=null) this.setState({isSignedIn :  true});
-            else this.setState({isSignedIn : false});
+        this.context.auth.onAuthStateChanged(usr=>{
+            if(usr!=null) {
+                this.setState({isSignedIn :  true , user : usr});
+            }
+                else this.setState({isSignedIn : false , user : usr});
         })
         this.getQuest();
         
@@ -45,6 +50,9 @@ class Home extends Component{
         let len = this.state.quest.length
         return(
             <div className = "home-box">
+                <div className='feed-home'>
+                    <FollowAndFeed/>
+                </div>
                 {
                 len>0?
                 <div className = "Home">
@@ -55,9 +63,12 @@ class Home extends Component{
                     } )}
                 </div>:
                 <div className = "Home">
-                    Loading... Loading ui 
+                    <Ghost/>
                 </div>
                 }
+                <div className = 'add-question-section'>
+                <Addquest/>
+                </div>
             </div>
 
         

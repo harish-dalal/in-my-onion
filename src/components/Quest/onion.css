@@ -33,6 +33,10 @@
     align-self: center;
 }
 
+.onion-box p.display-percent{
+    margin-left: auto !important;
+}
+
 .noselect {
     -webkit-touch-callout: none; /* iOS Safari */
       -webkit-user-select: none; /* Safari */

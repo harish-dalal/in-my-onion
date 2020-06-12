@@ -14,6 +14,7 @@ h3{
 
 .comment-link{
     margin-top: 3px;
+    margin-bottom: 6px;
     cursor: pointer;
 }
 
@@ -71,4 +72,29 @@ h3{
       font-size: .8rem;
       color: darkgrey;
       font-weight: 500;
+  }
+
+  .up-down-arrow{
+      width: 24px;
+      height: 24px;
+  }
+
+  .icon-svg{
+      stroke: #666;
+      stroke-width: 1.5;
+      fill: none;
+      fill-rule: evenodd;
+      stroke-linejoin: round;
+  }
+
+  svg{
+      cursor: pointer;
+  }
+
+  .upvoted{
+      stroke: #0962ffba !important;
+  }
+
+  .downvoted{
+      stroke: #d60707ba !important;
   }

@@ -4,6 +4,7 @@ import Home from './components/Home/Home'
 import './App.css';
 import {Switch , Route} from 'react-router-dom'
 import Filldata from './components/test/filldatabase'
+import Addquest from './components/addQuestion/Addquest'
 import Signup from './pages/signup'
 
 class App extends Component {
@@ -18,12 +19,14 @@ class App extends Component {
   render(){
     return (
       <div className = "App">
-      <Navbar/>   
-        <Switch>
-          <Route exact path='/' component={Home}/>
-          <Route exact path='/testdata' component={Filldata}/>
-          <Route exact path='/signup' component = {Signup}/>
-        </Switch>
+      <Navbar/>
+        <div className='home-body'> 
+          <Switch>
+            <Route exact path='/' component={Home}/>
+            <Route exact path='/AskQuest' component={Addquest}/>
+            <Route exact path='/signup' component = {Signup}/>
+          </Switch>
+        </div>
       </div>
     );
   }

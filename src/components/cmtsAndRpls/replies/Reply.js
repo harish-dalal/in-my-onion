@@ -17,7 +17,6 @@ class Comnt extends Component{
 
     render(){
         const Date = this.props.data.timeStamp.toDate().toString().split(' ')
-        console.log(this.props.data.timeStamp.toDate().toString().split(' '))
         return(
             <div className = 'reply-box'>
                 <div className = 'profile-box-reply'>

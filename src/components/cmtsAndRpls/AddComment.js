@@ -52,7 +52,11 @@ class AddComment extends Component{
             ...(this.props.type === 'comment' ? {totalComments : increament} : {totalReplies : increament})
         })
 
-        batch.commit().then(()=>console.log('increamented and added'))
+        batch.commit().then(()=>{
+            if(this.props.type === 'comments') this.props.commentToggle()
+            console.log('increamented and added')
+            this.setState({text : ''})
+        })
         .catch(err=>console.log('error ' + err))
     }
 
@@ -74,7 +78,7 @@ class AddComment extends Component{
                 {
                     this.state.user ?
                     (<div className = 'add-input'><input className = {'text-input ' + this.props.type + '-input'} type='textarea' placeholder={'Add public ' + this.props.type} value={this.state.text} onChange = {this.handleChange}/>
-                    <button className = {this.state.text.length ? 'comment-submit' : 'comment-submit-disabled'} type = 'submit' style={this.props.type === 'reply' ?{width : '20%'} : {width : 'auto'}} >{this.props.type.toUpperCase()}</button></div>)
+                    <button className = {this.state.text.trim().length ? 'comment-submit' : 'comment-submit-disabled'} type = 'submit' style={this.props.type === 'reply' ?{width : '20%'} : {width : 'auto'}} >{this.props.type.toUpperCase()}</button></div>)
                     :<p>{'Sign in for ' + this.props.type }</p>
                 }
             </form>

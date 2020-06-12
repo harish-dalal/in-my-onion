@@ -31,9 +31,12 @@ class Navbar extends Component{
 	render(){
 		if(this.props.location.pathname !== '/signup'){
 			return(
-				<div className = "navbar">
-					<p>In My Onion</p>
-					<div className = "sign-button">
+				<div className = 'navbar noselect'>
+					<Link to = './'><p className = 'in-my-onion-link'>In My Onion</p></Link>
+					<div  className = 'sign-button nodisplay' style={{marginLeft : 'auto'}}>
+					<Link to = './AskQuest'><button>Ask</button></Link>
+					</div>
+					<div className = 'sign-button' style={{marginRight : '4%'}}>
 						{
 							this.state.isSignedIn ?
 							<button onClick = {this.signOut.bind(this)}>Sign out</button>

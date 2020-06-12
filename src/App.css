@@ -4,3 +4,13 @@
 	text-align: center;
 }
 
+.home-body{
+	position: relative;
+	top: 60px;
+	display: flex;
+	justify-content: center;
+}
+
+button{
+	outline: none;
+}

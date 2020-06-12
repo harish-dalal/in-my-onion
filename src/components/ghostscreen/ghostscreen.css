@@ -1,0 +1,85 @@
+
+.ghost-box{
+    background-color: white;
+    box-sizing: border-box;
+    text-align: start;
+    padding: 8px;
+    color: rgb(82, 81, 81);
+    margin-top: 15px;
+    box-shadow: 0 1px 5px 0 #00000085;
+}
+
+.ghost-profile{
+    height: 35px;
+    background-color: rgb(156, 156, 156);
+    width: 35px;
+    border-radius: 50%;
+    background-color: rgb(173, 173, 173);
+}
+
+.ghost-profile-txt{
+    margin-left: 6px;
+    height: 35px;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ghost-name{
+    margin: 0;
+    background-image: linear-gradient(90deg, #ddd 0px, #e8e8e8 40px, #ddd 80px);
+    height: 60%;
+    width: 80%;
+    margin-bottom: 5%;
+    background-color: rgb(226, 226, 226);
+    animation: shine-lines 2s infinite linear;
+}
+
+.ghost-date{
+    margin-top: 2%px;
+    background-image: linear-gradient(90deg, #ddd 0px, #e8e8e8 40px, #ddd 80px);
+    height: 35%;
+    width: 60%;
+    background-color: rgb(196, 196, 196);
+    animation: shine-lines 2s infinite linear;
+}
+
+.ghost-title{
+    margin-top: 10px;
+    background-image: linear-gradient(90deg, #ddd 0px, #e8e8e8 40px, #ddd 80px);
+    width: 80%;
+    height: 20px;
+    background-color: rgb(226, 226, 226);
+    animation: shine-lines 2s infinite linear;
+}
+
+.ghost-option{
+    height: 30px;
+    width: 100%;
+    background-image: linear-gradient(90deg, #ddd 0px, #e8e8e8 40px, #ddd 80px);
+    background-size: 600px;
+    margin-top: 10px;
+    border-radius: 10px;
+    max-width: 400px;
+    animation: shine-lines 2s infinite linear;
+}
+
+
+
+
+@keyframes shine-lines {
+    0% {
+      background-position: -100px;
+    }
+    40%, 100% {
+      background-position: 500px;
+    }
+  }
+  @keyframes shine-avatar {
+    0% {
+      background-position: -32px;
+    }
+    40%, 100% {
+      background-position: 208px;
+    }
+  }

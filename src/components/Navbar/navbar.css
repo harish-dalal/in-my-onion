@@ -15,22 +15,55 @@
 	box-shadow: 0 3px 6px 0 #00000070
 }
 
-
+.navbar p.in-my-onion-link{
+	color: white;
+	margin: 0;
+	text-decoration: none;
+	user-select: none;
+}
+.navbar a{
+	text-decoration: none;
+	height: 100%;
+	margin-left: 5%;
+	outline: none;
+	user-select: none;
+	display: flex;
+	align-items: center;
+}
 .navbar p{
 	margin-left: 5%;
 }
 
 .sign-button{
-	margin-left: auto;
-	margin-right: 5%;
+	height: 70%;
 }
 
 .sign-button button{
-	height : 25px;
+	height : 100%;
 	width: 70px; 
-	border-radius: 40px;
+	font-size: .9rem;
+	border: none;
+	border-left: 1px solid white;
 	cursor: pointer;
-	border: 0px solid white;
-	box-shadow: 0 0 5px 0 white;
-	background-color: white;
+	background-color: transparent;
+	color: white;
 }
+
+@media only screen  and (min-width: 500px){
+	.nodisplay{
+		display: none !important;
+	}
+	.sign-button{
+		margin-left: auto;
+	}
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }
