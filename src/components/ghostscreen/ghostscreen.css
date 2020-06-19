@@ -28,29 +28,32 @@
 .ghost-name{
     margin: 0;
     background-image: linear-gradient(90deg, #ddd 0px, #e8e8e8 40px, #ddd 80px);
+    background-size: 600px;
     height: 60%;
     width: 80%;
     margin-bottom: 5%;
     background-color: rgb(226, 226, 226);
-    animation: shine-lines 2s infinite linear;
+    animation: shine-lines 1.6s infinite linear;
 }
 
 .ghost-date{
     margin-top: 2%px;
     background-image: linear-gradient(90deg, #ddd 0px, #e8e8e8 40px, #ddd 80px);
+    background-size: 600px;
     height: 35%;
     width: 60%;
     background-color: rgb(196, 196, 196);
-    animation: shine-lines 2s infinite linear;
+    animation: shine-lines 1.6s infinite linear;
 }
 
 .ghost-title{
     margin-top: 10px;
     background-image: linear-gradient(90deg, #ddd 0px, #e8e8e8 40px, #ddd 80px);
+    background-size: 600px;
     width: 80%;
     height: 20px;
     background-color: rgb(226, 226, 226);
-    animation: shine-lines 2s infinite linear;
+    animation: shine-lines 1.6s infinite linear;
 }
 
 .ghost-option{
@@ -61,8 +64,27 @@
     margin-top: 10px;
     border-radius: 10px;
     max-width: 400px;
-    animation: shine-lines 2s infinite linear;
+    animation: shine-lines 1.6s infinite linear;
 }
+
+.ghost-show-comment{
+    height: 20px;
+    width: 30%;
+    background-image: linear-gradient(90deg, #ddd 0px, #e8e8e8 40px, #ddd 80px);
+    background-size: 600px;
+    animation: shine-lines 1.6s infinite linear;
+}
+
+
+.ghost-add-comment{
+  height: 20px;
+  width: 30%;
+  background-image: linear-gradient(90deg, #ddd 0px, #e8e8e8 40px, #ddd 80px);
+  background-size: 600px;
+  margin-left: auto;
+  animation: shine-lines 1.6s infinite linear;
+}
+
 
 
 

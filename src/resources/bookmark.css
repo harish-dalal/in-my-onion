@@ -1,0 +1,19 @@
+svg.bookmark{
+    position: absolute;
+    right: 0;
+    top: -5px;
+    
+}
+
+.not-active-lower{
+    fill: white !important; 
+    stroke-width: 20px !important;
+    stroke: rgb(39, 39, 39) !important;
+    stroke-linejoin: round !important;
+    fill-rule: evenodd !important;
+}
+
+.not-active-upper{
+    fill : rgb(41, 41, 41) !important;
+}
+

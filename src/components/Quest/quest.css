@@ -1,5 +1,6 @@
 .quest-box{
     background-color: white;
+    position: relative;
     box-sizing: border-box;
     text-align: start;
     padding: 8px;
@@ -43,58 +44,92 @@ h3{
 
 .noselect {
     -webkit-touch-callout: none; /* iOS Safari */
-      -webkit-user-select: none; /* Safari */
-       -khtml-user-select: none; /* Konqueror HTML */
-         -moz-user-select: none; /* Old versions of Firefox */
-          -ms-user-select: none; /* Internet Explorer/Edge */
-              user-select: none; /* Non-prefixed version, currently
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+            -moz-user-select: none; /* Old versions of Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
     -webkit-tap-highlight-color: transparent;
-  }
+}
 
-  .profile-box{
-      display: flex;
-      flex-direction: row;
-      margin-bottom: 5px;
-  }
+.profile-box{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5px;
+}
 
-  .profile-box p{
-      font-size: 1rem;
-      margin-left: 6px;
-      margin-top: 0;
-      margin-bottom: 0;
-      color: rgb(68, 68, 68);
-      font-weight: bold;
-  }
+.profile-box p{
+    font-size: 1rem;
+    margin-left: 6px;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: rgb(68, 68, 68);
+    font-weight: bold;
+}
 
-  .profile-box .date{
-      margin-bottom: 0;
-      font-size: .8rem;
-      color: darkgrey;
-      font-weight: 500;
-  }
+.profile-box .date{
+    margin-bottom: 0;
+    font-size: .8rem;
+    color: darkgrey;
+    font-weight: 500;
+}
 
-  .up-down-arrow{
-      width: 24px;
-      height: 24px;
-  }
+.up-down-arrow{
+    width: 24px;
+    height: 24px;
+}
 
-  .icon-svg{
-      stroke: #666;
-      stroke-width: 1.5;
-      fill: none;
-      fill-rule: evenodd;
-      stroke-linejoin: round;
-  }
+.icon-svg{
+    stroke: #666;
+    stroke-width: 1.5;
+    fill: none;
+    fill-rule: evenodd;
+    stroke-linejoin: round;
+}
 
-  svg{
-      cursor: pointer;
-  }
+svg{
+    cursor: pointer;
+}
 
-  .upvoted{
-      stroke: #0962ffba !important;
-  }
+.upvoted{
+    stroke: #0962ffba !important;
+    fill: #0962ffba !important;
+}
 
-  .downvoted{
-      stroke: #d60707ba !important;
-  }
+.downvoted{
+    stroke: #d60707ba !important;
+    fill : #d60707ba !important;
+}
+
+  .setting-answer{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.856);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.onion-image{
+    height: 32px;
+    width: 32px;
+    background-image: url('../../resources/onion.png');
+    background-size: contain;
+    margin-right: 10px;
+}
+
+.hidden{
+    display: none !important;
+}
+
+.book-mark{
+    position: absolute;
+    right: 0;
+}

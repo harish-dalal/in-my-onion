@@ -1,9 +1,6 @@
-import {FirebaseContext} from '../API/firebase'
-import React , {Component} from 'react'
-
-class Vote extends Component{
+import firebase from 'firebase'
+class Vote{
     constructor(cont){
-        super()
         this.cont = cont
     }
 
@@ -22,13 +19,13 @@ class Vote extends Component{
                 quest : {[questId] : true}
             },{merge : true})
             batch.set(downVoteRefUser , {
-                quest : {[questId] : false}
+                quest : {[questId] : firebase.firestore.FieldValue.delete()}
             },{merge : true})
             batch.set(questupVote , {
                 user : {[userId] : true}
             }, { merge : true})
             batch.set(questdownVote , {
-                user : {[userId] : false}
+                user : {[userId] : firebase.firestore.FieldValue.delete()}
             },{merge : true})
             
             batch.commit().then(()=>console.log('upvoted')).catch(err=>console.log(err))
@@ -47,13 +44,13 @@ class Vote extends Component{
             let questdownVote = this.cont.db.collection('Quest_data').doc(questId).collection('downVotes').doc(`downVote_${questId}`)
 
             batch.set(upVoteRefUser , {
-                quest : {[questId] : false}
+                quest : {[questId] : firebase.firestore.FieldValue.delete()}
             },{merge : true})
             batch.set(downVoteRefUser , {
                 quest : {[questId] : true}
             },{merge : true})
             batch.set(questupVote , {
-                user : {[userId] : false}
+                user : {[userId] : firebase.firestore.FieldValue.delete()}
             }, { merge : true})
             batch.set(questdownVote , {
                 user : {[userId] : true}

@@ -55,7 +55,7 @@ class Addquest extends Component{
         if(this.state.user === null) return;
         let id;
         this.context.db.collection('Quest')
-        .add({...this.state.Quest , ...{timeStamp : firebase.firestore.Timestamp.now()} , ...{user : {userId : this.state.user.uid, userName : this.state.user.displayName, userProfilePicUrl : this.state.user.photoURL}} , ...{totalComments : 0}})
+        .add({...this.state.Quest , ...{timeStamp : firebase.firestore.Timestamp.now()} , ...{user : {userId : this.state.user.uid, userName : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.displayName, userProfilePicUrl : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.photoURL}} , ...{totalComments : 0}})
         .then((snap)=>{ 
             this.context.db.collection('Quest').doc(snap.id).collection('quest_data').doc('ans' + snap.id)
             .set({...{totalAnswers : this.state.totalAnswers} ,...{answers : new Array(this.state.Quest.options.length).fill(0)},

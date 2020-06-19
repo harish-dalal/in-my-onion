@@ -20,7 +20,7 @@ class Firebase {
 
     this.uiConfig = {
       // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-      signInFlow: 'popup',
+      signInFlow: 'redirect',
       signInSuccessUrl: './',
       callbacks: {
         signInSuccessWithAuthResult: (authResult, redirectUrl) => {

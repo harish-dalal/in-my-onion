@@ -13,6 +13,7 @@ class Home extends Component{
             quest : [],
             isSignedIn : false,
             user : {},
+            bookmarks : {},
         }
     }
 
@@ -25,6 +26,7 @@ class Home extends Component{
                         {...doc.data() , ...{questId : doc.id}}
                 )
             });
+            data = this.shuffle(data)
             this.setState((prevState) => ({quest : prevState.quest.concat(data)}))
             if(this.state.quest.length === 0){ 
                 console.log('need to refresh')
@@ -39,11 +41,40 @@ class Home extends Component{
         this.context.auth.onAuthStateChanged(usr=>{
             if(usr!=null) {
                 this.setState({isSignedIn :  true , user : usr});
+                this.gettingBookmarksUser(usr.uid);
             }
                 else this.setState({isSignedIn : false , user : usr});
         })
         this.getQuest();
         
+    }
+
+     
+    shuffle(array){
+        let m = array.length, t, i;
+        
+        // While there remain elements to shuffle…
+        while (m) {
+        
+            // Pick a remaining element…
+            i = Math.floor(Math.random() * m--);
+        
+            // And swap it with the current element.
+            t = array[m];
+            array[m] = array[i];
+            array[i] = t;
+        }
+        
+        return array;
+    }
+
+    gettingBookmarksUser(user){
+        if(user === null) return
+        let ref = this.context.db.collection('Users_pvt_data').doc(user).collection('Quest_bookmark').doc(`bookmark_${user}`)
+        .onSnapshot(snap=>{
+            let data = snap.data();
+            this.setState({bookmarks : data.quest})
+        })
     }
 
     render(){
@@ -58,7 +89,7 @@ class Home extends Component{
                 <div className = "Home">
                     {this.state.quest.map(qu =>{
                         return(
-                            <Quest data = {qu} key = {qu.questId} signed = {this.state.isSignedIn}/>
+                            <Quest data = {qu} key = {qu.questId} signed = {this.state.isSignedIn} bookmarked = {this.state.bookmarks.hasOwnProperty(qu.questId)}/>
                         )
                     } )}
                 </div>:

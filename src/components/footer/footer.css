@@ -1,0 +1,61 @@
+
+.footer-bar{
+	background-color: #8a0707;
+	position: fixed;
+	height: 35px;
+	bottom: 0;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	z-index: 20;
+	color: white;
+	transition: height 0.2s ease;
+	overflow: hidden;
+	border-top:2px solid #8a0707;
+}
+
+.footer-bar a{
+	text-decoration: none;
+	user-select: none;
+	outline: none;
+	color: white;
+}
+
+.margin-tab{
+	box-sizing: content-box;
+	width: 25%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: 400;
+}
+
+.active-tab{
+	background: white !important;
+	color: #8a0707 !important;
+	font-weight: 400;
+}
+
+.home-tab{
+	/* margin-left: 20px !important; */
+}
+
+.my-quest-tab{
+}
+
+.liked-tab{
+}
+
+.saved-tab{
+	/* margin-right: 20px !important; */
+}
+
+
+@media only screen  and (min-width: 500px){
+	.footer-bar{
+		display: none !important;
+	}
+}

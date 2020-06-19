@@ -6,11 +6,13 @@ import AddComment from '../cmtsAndRpls/AddComment'
 import './quest.css'
 import { FirebaseContext } from '../API/firebase'
 import Vote from '../helper/vote'
+import bookmark from '../helper/bookmark' 
+import Bookmark from '../../resources/Bookmark'
 
 class Quest extends Component{
     constructor(props){
         super(props)
-        //props =>  data(quest data) , signed(bool) , key(questId)
+        //props =>  data(quest data) , signed(bool) , key(questId) , bookmarked(bool)
         this.state = {
             showAnswer : false,
             viewAnswer : false,
@@ -19,6 +21,7 @@ class Quest extends Component{
             addComment : false,
             upVoted : false,
             downVoted : false,
+            settingAns : false,
             upVote : 0,
             downVote : 0,
             questData : {
@@ -40,6 +43,7 @@ class Quest extends Component{
         
         this.commentToggle = this.commentToggle.bind(this)
         this.vote = new Vote(this.context)
+        this.bookmark = new bookmark(this.context)
     }
 
     commentToggle(value){
@@ -49,6 +53,11 @@ class Quest extends Component{
     }
 
     answerToggle(){
+            if(!this.props.signed) {
+                this.setState({viewAnswer : false})
+                alert('sign in to view answers')
+                return
+            }
             this.setState(prevState => ({
                 viewAnswer : !prevState.viewAnswer
             }))
@@ -61,11 +70,11 @@ class Quest extends Component{
     ansClicked(ind){
         if(ind === this.state.index) return;
         
-
+        this.setState({settingAns : true})
+        
         let ref = this.context.db.collection('Quest').doc(this.props.data.questId)
                     .collection('quest_data').doc('ans' + this.props.data.questId)
         
-        console.log('wait...')
         
         return this.context.db.runTransaction(trans=>{
             return trans.get(ref).then(doc=>{
@@ -81,8 +90,14 @@ class Quest extends Component{
                 let user = this.context.auth.currentUser.uid
                 trans.set(ref , {answers : answerArray , totalAnswers : totatAns , users : {[user] : ind} }, {merge : true})
             })
-        }).then(()=>console.log('success in transaction done'))
-        .catch(error => console.log('error in transaction done ' + error))
+        }).then(()=>{
+            console.log('success in transaction done')
+            this.setState({settingAns : false})
+        }).catch(error =>{ 
+            console.log('error in transaction done ' + error)
+            this.setState({settingAns : false})
+            alert('try again later')
+        })
 
     }
 
@@ -103,24 +118,24 @@ class Quest extends Component{
             this.setState({questData  : data , viewAnswer : boolview , index : ind })
         })
 
+        //getting bookmarks as well
+    }
+
+    getVotes(){
         //getting upvotes snapshot
+        //Todo to remove the conditoin tot check the user value inside OBkectjs.keys
         this.context.db.collection('Quest_data').doc(this.props.data.questId).collection('upVotes').doc(`upVote_${this.props.data.questId}`)
         .onSnapshot(snap=>{
             let data = snap.data();
-            let up = 0;
-            let b=[]
             if(typeof data!=='undefined'){
                 data = data.user
+                let lenData = typeof data !== 'undefined' ? Object.getOwnPropertyNames(data).length : 0;
                 let user = null
                 if(this.props.signed){
                     user = this.context.auth.currentUser.uid
+                    if(lenData!==0) if(data.hasOwnProperty(user)) this.setState({upVoted : true , downVoted : false})
                 }
-                Object.keys(data).forEach(key=>{
-                    if(data[key]) up+=1;
-                    if(user && user===key) if(data[key]) this.setState({upVoted : true , downVoted : false})
-                    
-                })
-                this.setState({upVote : up})
+                this.setState({upVote : lenData})
             }
         })
 
@@ -128,23 +143,17 @@ class Quest extends Component{
         this.context.db.collection('Quest_data').doc(this.props.data.questId).collection('downVotes').doc(`downVote_${this.props.data.questId}`)
         .onSnapshot(snap=>{
             let data = snap.data();
-            let down = 0;
-            let b=[]
             if(typeof data!=='undefined'){
                 data = data.user
+                let lenData = typeof data !== 'undefined' ? Object.getOwnPropertyNames(data).length : 0;
                 let user = null
                 if(this.props.signed){
                     user = this.context.auth.currentUser.uid
+                    if(lenData!==0) if(data.hasOwnProperty(user)) this.setState({upVoted : false , downVoted : true})
                 }
-                Object.keys(data).forEach(key=>{
-                    if(data[key]) down+=1;
-                    if(user && user===key) if(data[key]) this.setState({upVoted : false , downVoted : true})
-                    
-                })
-                this.setState({downVote : down})
+                this.setState({downVote : lenData})
             }
         })
-
     }
 
     componentDidMount(){
@@ -154,14 +163,11 @@ class Quest extends Component{
         else{
             this.setState({showAnswer : false , viewAnswer : false , index : -1 , upVoted : false , downVoted : false})
         }
+        this.getVotes()
         this.vote = new Vote(this.context)
+        this.bookmark = new bookmark(this.context)
         // console.log(this.state.showAnswer + ' showans ' + this.props.signed)
         
-    }
-
-
-    downVote(){
-
     }
 
     componentWillUnmount(){
@@ -176,11 +182,16 @@ class Quest extends Component{
         const Date = this.props.data.timeStamp.toDate().toDateString().split(' ')
         return(
             <div className = "quest-box">
+                <Bookmark click = {()=>this.bookmark.setBookmarkToggle(this.props.signed ? this.context.auth.currentUser.uid : null , this.props.data.questId , this.props.bookmarked)}  bookmarked = {this.props.bookmarked}/>
+                <div className = {(this.state.settingAns ? '' : 'hidden') +' setting-answer noselect'}>
+                        <p>Wait your onion is getting peeled...</p>
+                        <div className = 'onion-image'/>
+                </div>
                 <div className = 'profile-box'>
                     <div style ={{height:'35px' , width:'35px'}}><Profile imageUrl = {this.props.data.isAnonymous ? null : this.props.data.user.userProfilePicUrl}/></div>
                     <div style= {{display : 'flex' , flexDirection : 'column'}}>
                         <p>{this.props.data.isAnonymous ? 'Anonymous' : this.props.data.user.userName}</p>
-                        <p className = 'date'><span>&#183;</span>{' ' + Date[2] + ' ' + Date[1] + ' ' + Date[3] }</p>
+                        <span style = {{display:'flex' , flexDirection : 'row'}}><p className = 'date'><span>&#183;</span>{' ' + Date[2] + ' ' + Date[1] + ' ' + Date[3] }</p>{this.props.signed ? <p className ='date'><span>&#183;</span>{' '+this.state.questData.totalAnswers + ' Voted'}</p> : null}</span>
                     </div>
                 </div>
                 <h3>{this.props.data.title}</h3>

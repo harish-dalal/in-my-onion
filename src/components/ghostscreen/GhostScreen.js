@@ -18,7 +18,7 @@ const display=()=>{
                 <div className = 'ghost-option'/>
                 <div className = 'ghost-option'/>
             </div>
-            <div>
+            <div style ={{display : 'flex' , flexDirection : 'row' , marginTop : '20px' , marginBottom : '10px'}}>
                 <div className = 'ghost-show-comment'/>
                 <div className = 'ghost-add-comment'/>
             </div>

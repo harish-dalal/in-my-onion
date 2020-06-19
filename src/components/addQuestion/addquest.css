@@ -180,7 +180,7 @@ svg{
     left: 0;
     right: 0;
     background-color: rgba(0, 0, 0, 0.856);
-    z-index: 100;
+    z-index: 50;
     display: flex;
     flex-direction: column;
     justify-content: center;
