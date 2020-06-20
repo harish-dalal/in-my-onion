@@ -1,5 +1,6 @@
 import React , {Component} from 'react'
 import Onion from './Onion'
+import firebase from 'firebase'
 import Comments from '../cmtsAndRpls/comments/Comments'
 import Profile from '../profilePic/ProfilePic'
 import AddComment from '../cmtsAndRpls/AddComment'
@@ -12,7 +13,7 @@ import Bookmark from '../../resources/Bookmark'
 class Quest extends Component{
     constructor(props){
         super(props)
-        //props =>  data(quest data) , signed(bool) , key(questId) , bookmarked(bool)
+        //props =>  data(quest data) , signed(bool) , key(questId) , bookmarked(bool) , forbookmarktab-function
         this.state = {
             showAnswer : false,
             viewAnswer : false,
@@ -108,7 +109,7 @@ class Quest extends Component{
     getAnswer(){
         //getting answer snapshot
         const user = (this.context.auth.currentUser.uid)
-        this.unsubscribe = this.context.db.collection('Quest').doc(this.props.data.questId)
+        this.unsubscribeAns = this.context.db.collection('Quest').doc(this.props.data.questId)
         .collection('quest_data').doc('ans' + this.props.data.questId)
         .onSnapshot(snap=>{
             const data = snap.data()
@@ -124,7 +125,7 @@ class Quest extends Component{
     getVotes(){
         //getting upvotes snapshot
         //Todo to remove the conditoin tot check the user value inside OBkectjs.keys
-        this.context.db.collection('Quest_data').doc(this.props.data.questId).collection('upVotes').doc(`upVote_${this.props.data.questId}`)
+        this.unsubscribeUp = this.context.db.collection('Quest_data').doc(this.props.data.questId).collection('upVotes').doc(`upVote_${this.props.data.questId}`)
         .onSnapshot(snap=>{
             let data = snap.data();
             if(typeof data!=='undefined'){
@@ -140,7 +141,7 @@ class Quest extends Component{
         })
 
         //getting downvotes snapshot
-        this.context.db.collection('Quest_data').doc(this.props.data.questId).collection('downVotes').doc(`downVote_${this.props.data.questId}`)
+        this.unsubscribedown = this.context.db.collection('Quest_data').doc(this.props.data.questId).collection('downVotes').doc(`downVote_${this.props.data.questId}`)
         .onSnapshot(snap=>{
             let data = snap.data();
             if(typeof data!=='undefined'){
@@ -154,6 +155,20 @@ class Quest extends Component{
                 this.setState({downVote : lenData})
             }
         })
+    }
+
+    removeQuest(questid){
+        console.log(`remove ${questid}`)
+        let batch = this.context.db.batch()
+        let questRef =  this.context.db.collection('Quest').doc(questid);
+        let userQuestRef = this.context.db.collection('Users_pvt_data').doc(this.context.auth.currentUser.uid).collection('Quest').doc(`Quest_${this.context.auth.currentUser.uid}`)
+        
+        batch.delete(questRef);
+        batch.set(userQuestRef , {
+            quest : {[questid] : firebase.firestore.FieldValue.delete()}
+        }, {merge : true})
+
+        batch.commit().then(()=>window.location.reload()).catch(err=>console.log('error in removing '+err))
     }
 
     componentDidMount(){
@@ -173,16 +188,27 @@ class Quest extends Component{
     componentWillUnmount(){
         //this will detach listener to the answers for this question
         if(this.props.signed){
-            this.unsubscribe();
+            this.unsubscribeAns();
         }
+        // this.unsubscribeAns();
+        this.unsubscribeUp();
+        this.unsubscribedown();
     }
 
 
     render(){
+        if(typeof this.props.data.timeStamp === 'undefined') return null
         const Date = this.props.data.timeStamp.toDate().toDateString().split(' ')
         return(
             <div className = "quest-box">
-                <Bookmark click = {()=>this.bookmark.setBookmarkToggle(this.props.signed ? this.context.auth.currentUser.uid : null , this.props.data.questId , this.props.bookmarked)}  bookmarked = {this.props.bookmarked}/>
+                {this.props.deleteMyQuest && this.props.signed ?
+                    <div className = 'remove noselect' onClick={()=>this.removeQuest(this.props.data.questId)}>Remove</div>
+                    :null
+                }       
+                <Bookmark click = {()=>{
+                    this.bookmark.setBookmarkToggle(this.props.signed ? this.context.auth.currentUser.uid : null , this.props.data.questId , this.props.bookmarked)
+                    this.props.funcForBookMarkTab()
+                    }}  bookmarked = {this.props.bookmarked}/>
                 <div className = {(this.state.settingAns ? '' : 'hidden') +' setting-answer noselect'}>
                         <p>Wait your onion is getting peeled...</p>
                         <div className = 'onion-image'/>

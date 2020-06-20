@@ -6,6 +6,8 @@
     padding: 8px;
     color: rgb(82, 81, 81);
     margin-top: 15px;
+    display: flex;
+    flex-direction: column;
     box-shadow: 0 1px 5px 0 #00000085;
 }
 
@@ -132,4 +134,12 @@ svg{
 .book-mark{
     position: absolute;
     right: 0;
+}
+
+.remove{
+    margin-bottom: 5px;
+    color: #8a0707;
+    width: fit-content;
+    align-self: center;
+    cursor: pointer;
 }

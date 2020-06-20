@@ -16,13 +16,13 @@ class Vote{
             let questdownVote = this.cont.db.collection('Quest_data').doc(questId).collection('downVotes').doc(`downVote_${questId}`)
 
             batch.set(upVoteRefUser , {
-                quest : {[questId] : true}
+                quest : {[questId] : firebase.firestore.Timestamp.now()}
             },{merge : true})
             batch.set(downVoteRefUser , {
                 quest : {[questId] : firebase.firestore.FieldValue.delete()}
             },{merge : true})
             batch.set(questupVote , {
-                user : {[userId] : true}
+                user : {[userId] : firebase.firestore.Timestamp.now()}
             }, { merge : true})
             batch.set(questdownVote , {
                 user : {[userId] : firebase.firestore.FieldValue.delete()}
@@ -47,13 +47,13 @@ class Vote{
                 quest : {[questId] : firebase.firestore.FieldValue.delete()}
             },{merge : true})
             batch.set(downVoteRefUser , {
-                quest : {[questId] : true}
+                quest : {[questId] : firebase.firestore.Timestamp.now()}
             },{merge : true})
             batch.set(questupVote , {
                 user : {[userId] : firebase.firestore.FieldValue.delete()}
             }, { merge : true})
             batch.set(questdownVote , {
-                user : {[userId] : true}
+                user : {[userId] : firebase.firestore.Timestamp.now()}
             },{merge : true})
             
             batch.commit().then(()=>console.log('downvoted')).catch(err=>console.log(err))

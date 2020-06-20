@@ -10,6 +10,7 @@ class Addquest extends Component{
             classNameHidden : true ,
             addOnSuccess : false,
             userCanSubmit : false,
+            explicitButtonDisable : true,
             user : {},
             Quest : {
                 title : "",
@@ -53,19 +54,28 @@ class Addquest extends Component{
     addquestion(event){
         event.preventDefault()
         if(this.state.user === null) return;
+        this.setState({explicitButtonDisable : false})
         let id;
         this.context.db.collection('Quest')
-        .add({...this.state.Quest , ...{timeStamp : firebase.firestore.Timestamp.now()} , ...{user : {userId : this.state.user.uid, userName : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.displayName, userProfilePicUrl : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.photoURL}} , ...{totalComments : 0}})
-        .then((snap)=>{ 
-            this.context.db.collection('Quest').doc(snap.id).collection('quest_data').doc('ans' + snap.id)
-            .set({...{totalAnswers : this.state.totalAnswers} ,...{answers : new Array(this.state.Quest.options.length).fill(0)},
+        .add({...this.state.Quest , ...{timeStamp : firebase.firestore.Timestamp.now()} , ...{user : {userId : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.uid, userName : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.displayName, userProfilePicUrl : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.photoURL}} , ...{totalComments : 0}})
+        .then((snap)=>{
+            let batch = this.context.db.batch()
+
+            let ansref = this.context.db.collection('Quest').doc(snap.id).collection('quest_data').doc('ans' + snap.id)
+            let userpvtref = this.context.db.collection('Users_pvt_data').doc(this.state.user.uid).collection('Quest').doc(`Quest_${this.state.user.uid}`)
+
+            batch.set(ansref , {...{totalAnswers : this.state.totalAnswers} ,...{answers : new Array(this.state.Quest.options.length).fill(0)},
                 ...{male : new Array(this.state.Quest.options.length).fill(0)},
                 ...{female : new Array(this.state.Quest.options.length).fill(0)} , ...{quest_id : snap.id} , ...{users : {}}})
-            .then(finalsnap=> {
+            
+            batch.set(userpvtref , {quest : {[snap.id] : firebase.firestore.Timestamp.now()}} , {merge : true})
+
+            batch.commit()
+            .then(()=> {
                 console.log('success')
-                this.setState({Quest : {title : "" , options : []} , ...{addOnSuccess : true}})
+                this.setState({Quest : {title : "" , options : []} , ...{addOnSuccess : true} , explicitButtonDisable : true})
             })
-            .catch(error=> console.log('error in answers' + error))
+            .catch(error=> console.log('error in answers ans pvt data' + error))
         })
         .catch(error=> console.log('error in submitting ' + error));
     }
@@ -83,10 +93,14 @@ class Addquest extends Component{
     }
 
     componentDidMount(){
-        this.context.auth.onAuthStateChanged(u=>{
+        this.unsubscribeAuth = this.context.auth.onAuthStateChanged(u=>{
             if(u!=null) this.setState({user :  u});
             else this.setState({user : null});
         })
+    }
+
+    componentWillUnmount(){
+        if(this.state.user) this.unsubscribeAuth()
     }
 
     render(){
@@ -125,7 +139,7 @@ class Addquest extends Component{
                     <textarea className='tags-input' type='text' placeholder ='tags (seperated by comma) tag1, tag2' name='tags' onChange={this.updateInputArray}/><br/>
                     {
                         this.state.user?
-                        <button className={'submit-button'} disabled={!((this.state.Quest.options.length<6 && this.state.Quest.options.every(op=> {return op.trim().length > 0}))&& this.state.Quest.title.trim().length)} type = 'submit'>Submit</button>
+                        <button className={'submit-button'} disabled={!((this.state.Quest.options.length<6 && this.state.Quest.options.every(op=> {return op.trim().length > 0}))&& this.state.Quest.title.trim().length && this.state.explicitButtonDisable)} type = 'submit'>Submit</button>
                         :<p style = {{margin : 0}}>Sign in to ask</p>
                     }
                 </form>

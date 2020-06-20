@@ -5,6 +5,8 @@ import Footer from './components/footer/Footer'
 import {Switch , Route} from 'react-router-dom'
 import Addquest from './components/addQuestion/Addquest'
 import Signup from './pages/signup'
+import BookmarkHome from './components/bookmarkHome/BookmarkHome'
+import MyQuestHome from './components/myQuestHome/MyQuestHome'
 import './App.css';
 
 class App extends Component {
@@ -27,6 +29,8 @@ class App extends Component {
 					<Route exact path='/' component={Home}/>
 					<Route exact path='/AskQuest' component={Addquest}/>
 					<Route exact path='/signup' component = {Signup}/>
+					<Route exact path='/Bookmarked' component = {BookmarkHome}/>
+					<Route exact path='/MyQuestHome' component = {MyQuestHome}/>
 					</Switch>
 				</div>
 				<Footer/>

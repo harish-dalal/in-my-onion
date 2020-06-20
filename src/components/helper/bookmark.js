@@ -15,7 +15,7 @@ class bookmark{
         if(!bookmarked){
             let ref = this.cont.db.collection('Users_pvt_data').doc(userId).collection('Quest_bookmark').doc(`bookmark_${userId}`)
             ref.set({
-                quest : {[questId] : true}
+                quest : {[questId] : firebase.firestore.Timestamp.now()}
             },{merge : true}).then(()=>{
                 console.log('success in bookmark')
             }).catch(er=>console.log('error in bookmark' + er));
