@@ -160,7 +160,6 @@ class Quest extends Component{
     }
 
     removeQuest(questid){
-        console.log(`remove ${questid}`)
         let batch = this.context.db.batch()
         let questRef =  this.context.db.collection('Quest').doc(questid);
         let userQuestRef = this.context.db.collection('Users_pvt_data').doc(this.context.auth.currentUser.uid).collection('Quest').doc(`Quest_${this.context.auth.currentUser.uid}`)

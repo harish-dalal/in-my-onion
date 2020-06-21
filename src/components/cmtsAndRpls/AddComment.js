@@ -54,7 +54,6 @@ class AddComment extends Component{
 
         batch.commit().then(()=>{
             if(this.props.type === 'comments') this.props.commentToggle()
-            console.log('increamented and added')
             this.setState({text : ''})
         })
         .catch(err=>console.log('error ' + err))

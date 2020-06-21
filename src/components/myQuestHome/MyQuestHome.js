@@ -3,8 +3,6 @@ import { FirebaseContext } from '../API/firebase'
 import {Link} from 'react-router-dom'
 import Quest from '../Quest/Quest'
 import Signup from '../../pages/signup'
-import Addquest from '../addQuestion/Addquest'
-import FollowAndFeed from '../comingSoon/FollowAndFeed'
 import Ghost from '../ghostscreen/GhostScreen'
 import '../Home/home.css'
 

@@ -24,15 +24,12 @@ class Replies extends Component{
         this.unsubscribe = ref.onSnapshot(snap=>{
             let data = []
             let userdata = []
-            console.log(snap)
             snap.docs.forEach(doc=>{
                 // return({...doc.data() , ...{replyId : doc.id}})
                 if(this.context.auth.currentUser && doc.data().user.userId === this.context.auth.currentUser.uid){
-
                     userdata.push({...doc.data() , ...{replyId : doc.id}})
                 }
                 else {
-                    console.log('non-user')
                     data.push({...doc.data() , ...{replyId : doc.id}})
                 }
             })

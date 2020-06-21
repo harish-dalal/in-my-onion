@@ -1,6 +1,5 @@
 import React , {Component} from 'react'
 import { FirebaseContext } from '../../API/firebase'
-import AddComment from '../AddComment'
 import Comnt from './Comnt'
 
 class Comments extends Component{

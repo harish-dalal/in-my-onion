@@ -15,8 +15,6 @@ class Vote{
             let questupVote = this.cont.db.collection('Quest_data').doc(Id).collection('upVotes').doc(`upVote_${Id}`)
             let questdownVote = this.cont.db.collection('Quest_data').doc(Id).collection('downVotes').doc(`downVote_${Id}`)
 
-            let id = (type.toLowerCase() + 'Id').toString() 
-
             batch.set(upVoteRefUser , {
                 [type.toLowerCase()] : {[Id] : firebase.firestore.Timestamp.now()}
             },{merge : true})

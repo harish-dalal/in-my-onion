@@ -44,7 +44,6 @@ class Addquest extends Component{
     }
 
     updateInputArrayOptions(event){
-        const name = event.target.name;
         const value = event.target.value.split(', ');
         this.setState((prevState)=>({ 
             Quest : {...prevState.Quest , ...{options : value}, 
@@ -56,9 +55,8 @@ class Addquest extends Component{
         event.preventDefault()
         if(this.state.user === null) return;
         this.setState({explicitButtonDisable : false , settingQuest : true})
-        let id;
         this.context.db.collection('Quest')
-        .add({...this.state.Quest , ...{timeStamp : firebase.firestore.Timestamp.now()} , ...{user : {userId : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.uid, userName : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.displayName, userProfilePicUrl : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.photoURL}} , ...{totalComments : 0}})
+        .add({...this.state.Quest , ...{totalAnswers : this.state.totalAnswers} , ...{timeStamp : firebase.firestore.Timestamp.now()} , ...{user : {userId : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.uid, userName : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.displayName, userProfilePicUrl : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.photoURL}} , ...{totalComments : 0}})
         .then((snap)=>{
             let batch = this.context.db.batch()
 
@@ -105,7 +103,6 @@ class Addquest extends Component{
     }
 
     render(){
-        let user = this.context.auth.currentUser
         return(
             <div className = 'add-question'>
                 
