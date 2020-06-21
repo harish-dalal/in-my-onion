@@ -8,7 +8,10 @@ class Replies extends Component{
         super(props)
         // props => questId , commentId
         this.state = {
+            userReplies : [],
             replies : [],
+            isSignedIn : false,
+            user : {},
         }
     }
 
@@ -19,11 +22,30 @@ class Replies extends Component{
         .collection('Replies')
 
         this.unsubscribe = ref.onSnapshot(snap=>{
+            let data = []
+            let userdata = []
             console.log(snap)
-            const data = snap.docs.map(doc=>{
-                return({...doc.data() , ...{replyId : doc.id}})
+            snap.docs.forEach(doc=>{
+                // return({...doc.data() , ...{replyId : doc.id}})
+                if(this.context.auth.currentUser && doc.data().user.userId === this.context.auth.currentUser.uid){
+
+                    userdata.push({...doc.data() , ...{replyId : doc.id}})
+                }
+                else {
+                    console.log('non-user')
+                    data.push({...doc.data() , ...{replyId : doc.id}})
+                }
             })
-            this.setState(prevState=>({replies : data}))
+            this.setState({...{replies : data} , ...{userReplies : userdata}})
+        })
+
+        this.unsubscribeAuthChange = this.context.auth.onAuthStateChanged(usr=>{
+            if(usr!=null) {
+                this.setState({isSignedIn :  true , user : usr});
+            }
+            else {
+                this.setState({isSignedIn : false , user : usr});
+            }
         })
     }
 
@@ -36,8 +58,13 @@ class Replies extends Component{
             <div>
                 <div className = 'single-reply-box'>
                     {
+                        this.state.userReplies.map(reply=>{
+                            return (<Reply data = {reply} key={reply.replyId} questId = {this.props.questId} commentId = {this.props.commentId} signed = {this.state.isSignedIn}/>)
+                        })
+                    }
+                    {
                         this.state.replies.map(reply=>{
-                            return (<Reply data = {reply} key={reply.replyId} questId = {this.props.questId} commentId = {this.props.commentId}/>)
+                            return (<Reply data = {reply} key={reply.replyId} questId = {this.props.questId} commentId = {this.props.commentId} signed = {this.state.isSignedIn}/>)
                         })
                     }
                 </div>

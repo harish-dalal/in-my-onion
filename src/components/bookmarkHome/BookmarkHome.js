@@ -16,20 +16,24 @@ class BookmarkHome extends Component{
             isSignedIn : false,
             user : {},
             bookmarks : {},
+            dataReceived : false,
         }
         this.removeQuestFromBookmark = this.removeQuestFromBookmark.bind(this)
     }
 
     getQuest(bookmarkData){
         let data = [];
-        Object.keys(bookmarkData).forEach(key=>{
-            console.log(key)
+        bookmarkData = Object.keys(bookmarkData)
+        if(bookmarkData.length === 0) this.setState({dataReceived : true})
+        else bookmarkData.forEach(key=>{
             this.context.db.collection('Quest').doc(key).get()
             .then(snap =>{
-                if(typeof snap.data() === 'undefined') return
-                // console.log(snap.data())
+                if(typeof snap.data() === 'undefined') {
+                    this.setState({dataReceived : true})
+                    return
+                }
                 data = data.concat({...snap.data() , ...{questId : snap.id}})
-                this.setState({quest : data})
+                this.setState({quest : data , dataReceived : true})
                 if(this.state.quest.length === 0){ 
                     console.log('need to refresh')
                     // window.location.reload()
@@ -45,12 +49,14 @@ class BookmarkHome extends Component{
         this.context.db.collection('Users_pvt_data').doc(user).collection('Quest_bookmark').doc(`bookmark_${user}`)
         .get().then(snap=>{
             let data = snap.data();
-            console.log(data)
             if(typeof data !== 'undefined'){
                 this.setState({bookmarks : data.quest})
                 this.getQuest(data.quest)
             }
-        })
+            else{
+                this.setState({dataReceived : true})
+            }
+        }).catch(err=>{console.log(err)})
     }
 
 
@@ -84,12 +90,12 @@ class BookmarkHome extends Component{
             <Signup/>
         )
         let len = this.state.quest.length
-        if(this.state.quest.every(e=>{
+        if((this.state.quest.every(e=>{
             return typeof e === 'undefined'
-        })){
+        }) || len === 0) && this.state.dataReceived){
             return(
                 <div>
-                    <div>No Saved</div>
+                    <div style = {{color : 'grey'}}>No Saved</div>
                     <Link to='./'>Return Home</Link>
                 </div>
             )

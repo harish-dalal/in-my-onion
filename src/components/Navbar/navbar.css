@@ -39,6 +39,10 @@
 }
 
 .sign-button button{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	height : 100%;
 	width: 70px; 
 	font-size: .9rem;

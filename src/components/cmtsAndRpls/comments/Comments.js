@@ -10,6 +10,8 @@ class Comments extends Component{
         this.state = {
             comments : [],
             userComments : [],
+            isSignedIn : false,
+            user : {},
         }
     }
 
@@ -35,6 +37,15 @@ class Comments extends Component{
             // console.log(data)
             this.setState(prevState=>({...{comments : data} , ...{userComments : userdata}}))
         })
+
+        this.unsubscribeAuthChange = this.context.auth.onAuthStateChanged(usr=>{
+            if(usr!=null) {
+                this.setState({isSignedIn :  true , user : usr});
+            }
+            else {
+                this.setState({isSignedIn : false , user : usr});
+            }
+        })
     }
 
     componentWillUnmount(){
@@ -47,14 +58,14 @@ class Comments extends Component{
                 <div>
                     {
                         this.state.userComments.map(comment=>{
-                            return (<Comnt data = {comment} key={comment.commentId} questId = {this.props.questId} />)
+                            return (<Comnt data = {comment} key={comment.commentId} questId = {this.props.questId} signed = {this.state.isSignedIn}/>)
                         })
                     }
                 </div>
                 <div>
                     {
                         this.state.comments.map(comment=>{
-                            return (<Comnt data = {comment} key={comment.commentId} questId = {this.props.questId} />)
+                            return (<Comnt data = {comment} key={comment.commentId} questId = {this.props.questId} signed = {this.state.isSignedIn}/>)
                         })
                     }
                 </div>

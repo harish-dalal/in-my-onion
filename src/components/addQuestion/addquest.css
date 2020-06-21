@@ -5,8 +5,8 @@
     max-width: 500px;
     box-sizing: content-box;
     margin-top: 15px;
-    margin-left: 2%;
-    margin-right: 2%;
+    /* margin-left: 2%;
+    margin-right: 2%; */
     box-shadow: 0 1px 5px 0 #00000085;
 }
 
@@ -198,4 +198,27 @@ svg{
 .okay-success-prompt:hover{
     background-color: black;
     color: white;
+}
+
+.setting-answer{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.856);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.onion-image{
+    height: 32px;
+    width: 32px;
+    background-image: url('../../resources/onion.png');
+    background-size: contain;
+    margin-right: 10px;
 }

@@ -4,6 +4,7 @@ import Quest from '../Quest/Quest'
 import Addquest from '../addQuestion/Addquest'
 import FollowAndFeed from '../comingSoon/FollowAndFeed'
 import Ghost from '../ghostscreen/GhostScreen'
+import MyQuestHome from '../myQuestHome/MyQuestHome'
 import './home.css'
 
 class Home extends Component{
@@ -16,15 +17,18 @@ class Home extends Component{
             bookmarks : {},
             getmoredata : false,
             lastdoc : '',
+            loadingUiBottom : false,
+            showMyQuestHome : false,
         }
         this.bottomOfPage = this.bottomOfPage.bind(this)
     }
 
     bottomOfPage(){
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && this.state.getmoredata && typeof this.state.lastdoc !== 'undefined') {
-            this.setState({getmoredata : false})
+        if ((window.innerHeight + window.scrollY + 100) >= document.body.offsetHeight && this.state.getmoredata && typeof this.state.lastdoc !== 'undefined') {
+            this.setState({getmoredata : false , loadingUiBottom : true})
             this.getQuest(true)
         }
+        if(typeof this.state.lastdoc === 'undefined') this.setState({loadingUiBottom : false})
     }
 
     getQuest(scroll){
@@ -44,7 +48,8 @@ class Home extends Component{
             this.setState((prevState) => ({quest : prevState.quest.concat(data) , getmoredata : true , lastdoc : snap.docs[snap.docs.length - 1]}))
             if(this.state.quest.length === 0){ 
                 console.log('need to refresh')
-                // window.location.reload()
+                alert('reload internet error')
+                window.location.reload()
             }
             
         })
@@ -84,15 +89,9 @@ class Home extends Component{
 
      
     shuffle(array){
-        let m = array.length, t, i;
-        
-        // While there remain elements to shuffle…
+        let m = array.length, t, i
         while (m) {
-        
-            // Pick a remaining element…
             i = Math.floor(Math.random() * m--);
-        
-            // And swap it with the current element.
             t = array[m];
             array[m] = array[i];
             array[i] = t;
@@ -117,13 +116,21 @@ class Home extends Component{
                             <Quest data = {qu} key = {qu.questId} signed = {this.state.isSignedIn} bookmarked = {this.state.bookmarks.hasOwnProperty(qu.questId)} funcForBookMarkTab = {()=>console.log(qu.questId)} deleteMyQuest = {false}/>
                         )
                     } )}
+                    <div style = {{color:'#929292' , marginTop : '5px'}}>
+                        {this.state.loadingUiBottom ?
+                            <div>Loading...</div>:
+                            <div>That's it add questions to fill the database</div>    
+                        }
+                    </div>
                 </div>:
                 <div className = "Home">
                     <Ghost/>
                 </div>
                 }
                 <div className = 'add-question-section'>
-                <Addquest/>
+                    <Addquest/>
+                    <div className = 'show-myquest-toggle' onClick = {()=>this.setState((prevState) => ({showMyQuestHome : !prevState.showMyQuestHome}))}>My questions</div>
+                    {this.state.showMyQuestHome ? <MyQuestHome className = 'Myquesthome'/> : null}
                 </div>
             </div>
 

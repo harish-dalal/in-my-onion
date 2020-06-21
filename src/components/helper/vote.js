@@ -4,22 +4,24 @@ class Vote{
         this.cont = cont
     }
 
-    upVote(type , userId = null , questId , commentId = null , replyId = null){
+    upVote(type , userId = null , Id , commentId = null , replyId = null){
         if(userId == null){
             console.log('sign in to upvote '+ type)
         }
         else{
             let batch = this.cont.db.batch()
-            let upVoteRefUser = this.cont.db.collection('Users_pvt_data').doc(userId).collection('Quest_upVote').doc('upVote_'+userId)
-            let downVoteRefUser = this.cont.db.collection('Users_pvt_data').doc(userId).collection('Quest_downVote').doc('downVote_'+userId)
-            let questupVote = this.cont.db.collection('Quest_data').doc(questId).collection('upVotes').doc(`upVote_${questId}`)
-            let questdownVote = this.cont.db.collection('Quest_data').doc(questId).collection('downVotes').doc(`downVote_${questId}`)
+            let upVoteRefUser = this.cont.db.collection('Users_pvt_data').doc(userId).collection(`${type}_upVote`).doc('upVote_'+userId)
+            let downVoteRefUser = this.cont.db.collection('Users_pvt_data').doc(userId).collection(`${type}_downVote`).doc('downVote_'+userId)
+            let questupVote = this.cont.db.collection('Quest_data').doc(Id).collection('upVotes').doc(`upVote_${Id}`)
+            let questdownVote = this.cont.db.collection('Quest_data').doc(Id).collection('downVotes').doc(`downVote_${Id}`)
+
+            let id = (type.toLowerCase() + 'Id').toString() 
 
             batch.set(upVoteRefUser , {
-                quest : {[questId] : firebase.firestore.Timestamp.now()}
+                [type.toLowerCase()] : {[Id] : firebase.firestore.Timestamp.now()}
             },{merge : true})
             batch.set(downVoteRefUser , {
-                quest : {[questId] : firebase.firestore.FieldValue.delete()}
+                [type.toLowerCase()] : {[Id] : firebase.firestore.FieldValue.delete()}
             },{merge : true})
             batch.set(questupVote , {
                 user : {[userId] : firebase.firestore.Timestamp.now()}
@@ -32,22 +34,22 @@ class Vote{
         }
     }
 
-    downVote(type , userId = null , questId , commentId = null , replyId = null){
+    downVote(type , userId = null , Id , commentId = null , replyId = null){
         if(userId == null){
             console.log('sign in to downVote '+ type)
         }
         else{
             let batch = this.cont.db.batch()
-            let upVoteRefUser = this.cont.db.collection('Users_pvt_data').doc(userId).collection('Quest_upVote').doc('upVote_'+userId)
-            let downVoteRefUser = this.cont.db.collection('Users_pvt_data').doc(userId).collection('Quest_downVote').doc('downVote_'+userId)
-            let questupVote = this.cont.db.collection('Quest_data').doc(questId).collection('upVotes').doc(`upVote_${questId}`)
-            let questdownVote = this.cont.db.collection('Quest_data').doc(questId).collection('downVotes').doc(`downVote_${questId}`)
+            let upVoteRefUser = this.cont.db.collection('Users_pvt_data').doc(userId).collection(`${type}_upVote`).doc('upVote_'+userId)
+            let downVoteRefUser = this.cont.db.collection('Users_pvt_data').doc(userId).collection(`${type}_downVote`).doc('downVote_'+userId)
+            let questupVote = this.cont.db.collection('Quest_data').doc(Id).collection('upVotes').doc(`upVote_${Id}`)
+            let questdownVote = this.cont.db.collection('Quest_data').doc(Id).collection('downVotes').doc(`downVote_${Id}`)
 
             batch.set(upVoteRefUser , {
-                quest : {[questId] : firebase.firestore.FieldValue.delete()}
+                quest : {[Id] : firebase.firestore.FieldValue.delete()}
             },{merge : true})
             batch.set(downVoteRefUser , {
-                quest : {[questId] : firebase.firestore.Timestamp.now()}
+                quest : {[Id] : firebase.firestore.Timestamp.now()}
             },{merge : true})
             batch.set(questupVote , {
                 user : {[userId] : firebase.firestore.FieldValue.delete()}

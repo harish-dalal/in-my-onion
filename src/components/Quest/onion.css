@@ -35,6 +35,9 @@
 
 .onion-box p.display-percent{
     margin-left: auto !important;
+    margin-right: 2%;
+    font-size: 0.9rem;
+    color: #9e9e9e;
 }
 
 .noselect {

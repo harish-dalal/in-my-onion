@@ -77,7 +77,7 @@ class AddComment extends Component{
             <form onSubmit = {this.submitComment.bind(this)}>
                 {
                     this.state.user ?
-                    (<div className = 'add-input'><input className = {'text-input ' + this.props.type + '-input'} type='textarea' placeholder={'Add public ' + this.props.type} value={this.state.text} onChange = {this.handleChange}/>
+                    (<div className = 'add-input'><input className = {'text-input ' + this.props.type + '-input'} type='textarea' placeholder={'Add public ' + this.props.type + ' as ' + this.state.user.displayName} value={this.state.text} onChange = {this.handleChange}/>
                     <button className = {this.state.text.trim().length ? 'comment-submit' : 'comment-submit-disabled'} type = 'submit' style={this.props.type === 'reply' ?{width : '20%'} : {width : 'auto'}} >{this.props.type.toUpperCase()}</button></div>)
                     :<p>{'Sign in for ' + this.props.type }</p>
                 }

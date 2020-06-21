@@ -39,7 +39,7 @@ class Firebase {
               quest : {},
             }).then(()=>{
               console.log('successfully added')
-              // window.location.assign('./') 
+              window.location.assign('./') 
             })
             .catch(error=>{
               console.log('error in adding ' +error);
@@ -50,10 +50,15 @@ class Firebase {
 
         },
       },
-      signInOptions: [
+      signInOptions: [{
         // Leave the lines as is for the providers you want to offer your users.
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      ],
+        provider : firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        customParameters: {
+          // Forces account selection even when one account
+          // is available.
+          prompt: 'select_account'
+        }
+      }],
     }
   }
 }

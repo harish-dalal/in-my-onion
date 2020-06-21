@@ -19,8 +19,28 @@
 .add-question-section{
     margin-left: 30px;
     margin-right: 60px;
+    width: 400px;
+    min-width: 400px;
+    max-width: 400px;
+    box-sizing: content-box;
 }
 
+.show-myquest-toggle{
+    background-color: white;
+    width: auto;
+    /* margin-left: 2%;
+    margin-right: 2%; */
+    margin-top: 20px;
+    box-shadow: 0 1px 5px 0 #00000085;
+    padding: 5px;
+    cursor: pointer;
+    box-sizing: content-box;
+}
+
+.Myquesthome{
+    margin-left: 2%;
+    margin-right: 2%;
+}
 
 @media only screen  and (max-width: 500px){
     .Home{

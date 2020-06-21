@@ -20,6 +20,7 @@ class Addquest extends Component{
                 isAnonymous : false,
                 tags : [],
                 comments : 0,
+                settingQuest : false,
             },
             totalAnswers : 0,
         }
@@ -54,7 +55,7 @@ class Addquest extends Component{
     addquestion(event){
         event.preventDefault()
         if(this.state.user === null) return;
-        this.setState({explicitButtonDisable : false})
+        this.setState({explicitButtonDisable : false , settingQuest : true})
         let id;
         this.context.db.collection('Quest')
         .add({...this.state.Quest , ...{timeStamp : firebase.firestore.Timestamp.now()} , ...{user : {userId : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.uid, userName : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.displayName, userProfilePicUrl : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.photoURL}} , ...{totalComments : 0}})
@@ -73,7 +74,7 @@ class Addquest extends Component{
             batch.commit()
             .then(()=> {
                 console.log('success')
-                this.setState({Quest : {title : "" , options : []} , ...{addOnSuccess : true} , explicitButtonDisable : true})
+                this.setState({Quest : {title : "" , options : []} , ...{addOnSuccess : true} , explicitButtonDisable : true , settingQuest : false})
             })
             .catch(error=> console.log('error in answers ans pvt data' + error))
         })
@@ -113,6 +114,10 @@ class Addquest extends Component{
                         <div className = 'okay-success-prompt' onClick = {this.okaySuccess.bind(this)}>
                             OK
                         </div>
+                </div>
+                <div className = {(this.state.settingQuest ? '' : 'hidden') +' setting-answer noselect'}>
+                        <p>Wait your quest is getting planted...</p>
+                        <div className = 'onion-image'/>
                 </div>
                 <h2>
                     Add question

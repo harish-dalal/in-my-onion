@@ -13,7 +13,7 @@ import Bookmark from '../../resources/Bookmark'
 class Quest extends Component{
     constructor(props){
         super(props)
-        //props =>  data(quest data) , signed(bool) , key(questId) , bookmarked(bool) , forbookmarktab-function
+        //props =>  data(quest data) , signed(bool) , key(questId) , bookmarked(bool) , forbookmarktab-function , removeQuet from myQuest
         this.state = {
             showAnswer : false,
             viewAnswer : false,
@@ -76,6 +76,7 @@ class Quest extends Component{
         let ref = this.context.db.collection('Quest').doc(this.props.data.questId)
                     .collection('quest_data').doc('ans' + this.props.data.questId)
         
+        let questRef = this.context.db.collection('Quest').doc(this.props.data.questId)
         
         return this.context.db.runTransaction(trans=>{
             return trans.get(ref).then(doc=>{
@@ -90,6 +91,7 @@ class Quest extends Component{
                 else totatAns += 1;
                 let user = this.context.auth.currentUser.uid
                 trans.set(ref , {answers : answerArray , totalAnswers : totatAns , users : {[user] : ind} }, {merge : true})
+                trans.set(questRef , {totalAnswers : totatAns} , {merge : true})
             })
         }).then(()=>{
             console.log('success in transaction done')
@@ -168,7 +170,7 @@ class Quest extends Component{
             quest : {[questid] : firebase.firestore.FieldValue.delete()}
         }, {merge : true})
 
-        batch.commit().then(()=>window.location.reload()).catch(err=>console.log('error in removing '+err))
+        batch.commit().then(()=>this.props.reloadFunc()).catch(err=>console.log('error in removing '+err))
     }
 
     componentDidMount(){
@@ -217,7 +219,7 @@ class Quest extends Component{
                     <div style ={{height:'35px' , width:'35px'}}><Profile imageUrl = {this.props.data.isAnonymous ? null : this.props.data.user.userProfilePicUrl}/></div>
                     <div style= {{display : 'flex' , flexDirection : 'column'}}>
                         <p>{this.props.data.isAnonymous ? 'Anonymous' : this.props.data.user.userName}</p>
-                        <span style = {{display:'flex' , flexDirection : 'row'}}><p className = 'date'><span>&#183;</span>{' ' + Date[2] + ' ' + Date[1] + ' ' + Date[3] }</p>{this.props.signed ? <p className ='date'><span>&#183;</span>{' '+this.state.questData.totalAnswers + ' Voted'}</p> : null}</span>
+                        <span style = {{display:'flex' , flexDirection : 'row'}}><p className = 'date'><span>&#183;</span>{' ' + Date[2] + ' ' + Date[1] + ' ' + Date[3] }</p><p className ='date'><span>&#183;</span>{' '+this.props.data.totalAnswers + ' Voted'}</p></span>
                     </div>
                 </div>
                 <h3>{this.props.data.title}</h3>
