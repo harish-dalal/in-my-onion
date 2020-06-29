@@ -9,6 +9,7 @@ const Onion = (props)=>{
         temp*=100;
         disPercent = Math.trunc(temp)
         wid = (String(temp) + "%");
+        if(temp === NaN) temp = 0;
     }
 
     return(

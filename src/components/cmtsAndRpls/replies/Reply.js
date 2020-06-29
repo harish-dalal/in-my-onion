@@ -1,6 +1,6 @@
 import React , { Component } from 'react'
 import Profile from '../../profilePic/ProfilePic'
-import firebase from '../../API/firebase'
+import firebase from 'firebase'
 import {FirebaseContext} from '../../API/firebase'
 import Vote from '../../helper/vote'
 import './reply.css'
@@ -75,6 +75,11 @@ class Reply extends Component{
         })
         this.getVotes()
         this.vote = new Vote(this.context)
+    }
+
+    componentWillUnmount(){
+        this.unsubscribedown();
+        this.unsubscribeUp();
     }
 
     render(){

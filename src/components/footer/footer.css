@@ -1,6 +1,6 @@
 
 .footer-bar{
-	background-color: #8a0707;
+	background-color: #66121d;
 	position: fixed;
 	height: 35px;
 	bottom: 0;
@@ -13,7 +13,7 @@
 	color: white;
 	transition: height 0.2s ease;
 	overflow: hidden;
-	border-top:2px solid #8a0707;
+	border-top:2px solid #66121d;
 }
 
 .footer-bar a{

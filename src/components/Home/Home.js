@@ -111,6 +111,9 @@ class Home extends Component{
                 {
                 len>0?
                 <div className = "Home">
+                    {
+                        this.state.isSignedIn ? null : <div className = 'Signin-box-text'>Sign in to view onions and adding quest</div>
+                    }
                     {this.state.quest.map(qu =>{
                         return(
                             <Quest data = {qu} key = {qu.questId} signed = {this.state.isSignedIn} bookmarked = {this.state.bookmarks.hasOwnProperty(qu.questId)} funcForBookMarkTab = {()=>console.log(qu.questId)} deleteMyQuest = {false}/>

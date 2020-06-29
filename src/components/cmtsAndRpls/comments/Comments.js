@@ -11,6 +11,7 @@ class Comments extends Component{
             userComments : [],
             isSignedIn : false,
             user : {},
+            loadingDiv : true,
         }
     }
 
@@ -29,12 +30,11 @@ class Comments extends Component{
                     userdata.push({...doc.data() , ...{commentId : doc.id}})
                 }
                 else {
-                    console.log('non-user')
                     data.push({...doc.data() , ...{commentId : doc.id}})
                 }
             })
             // console.log(data)
-            this.setState(prevState=>({...{comments : data} , ...{userComments : userdata}}))
+            this.setState(prevState=>({...{comments : data} , ...{userComments : userdata} , ...{loadingDiv : false}}))
         })
 
         this.unsubscribeAuthChange = this.context.auth.onAuthStateChanged(usr=>{
@@ -53,7 +53,9 @@ class Comments extends Component{
 
     render(){
         return(
-            <div>
+            this.state.loadingDiv ?
+            <div style={{width : '100%' , textAlign : 'center'}}>Loading...</div>
+            :<div>
                 <div>
                     {
                         this.state.userComments.map(comment=>{

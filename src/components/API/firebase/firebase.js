@@ -24,10 +24,6 @@ class Firebase {
       signInSuccessUrl: './',
       callbacks: {
         signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-          console.log("HELLO!!!!");
-          console.log(authResult.user)
-          console.log(authResult.user.displayName)
-          console.log(authResult.user.uid);
           const user = authResult.user
           if(user.metadata.creationTime !== user.metadata.lastSignInTime) return true;
           else{

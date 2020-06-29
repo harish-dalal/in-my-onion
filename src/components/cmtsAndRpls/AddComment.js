@@ -53,7 +53,7 @@ class AddComment extends Component{
         })
 
         batch.commit().then(()=>{
-            if(this.props.type === 'comments') this.props.commentToggle()
+            this.props.Toggle()
             this.setState({text : ''})
         })
         .catch(err=>console.log('error ' + err))

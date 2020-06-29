@@ -14,7 +14,7 @@ class Addquest extends Component{
             user : {},
             Quest : {
                 title : "",
-                options : [""],
+                options : ['',''],
                 upvotes : 0,
                 downvotes : 0,
                 isAnonymous : false,
@@ -43,16 +43,33 @@ class Addquest extends Component{
         this.setState((prevState)=>({ Quest : {...prevState.Quest , ...{[name] : value}}} ));
     }
 
-    updateInputArrayOptions(event){
-        const value = event.target.value.split(', ');
+    updateInputArrayOptions(index , event){
+        const value = event.target.value
+        let option = this.state.Quest.options
+        option[index] = value
         this.setState((prevState)=>({ 
-            Quest : {...prevState.Quest , ...{options : value}, 
-        }} ));
+            Quest : {...prevState.Quest , ...{options : option 
+        }}} ));
 
+    }
+
+    addOptionFromButton(){
+        let option = this.state.Quest.options
+        if(option.length >= 5) return;
+        option.push('')
+        this.setState(prevState=>({Quest : {...prevState.Quest , ...{options : option}}}))
+    }
+
+    removeOptionFromButton(index){
+        let option = this.state.Quest.options
+        if(option.length < 3) return;
+        option.splice(index , 1);
+        this.setState(prevState =>({Quest : {...prevState.Quest , ...{options : option}}}))
     }
 
     addquestion(event){
         event.preventDefault()
+        if(!((this.state.Quest.options.length<6 && this.state.Quest.options.every(op=> {return op.trim().length > 0}))&& this.state.Quest.title.trim().length && this.state.explicitButtonDisable)) return;
         if(this.state.user === null) return;
         this.setState({explicitButtonDisable : false , settingQuest : true})
         this.context.db.collection('Quest')
@@ -72,7 +89,7 @@ class Addquest extends Component{
             batch.commit()
             .then(()=> {
                 console.log('success')
-                this.setState({Quest : {title : "" , options : []} , ...{addOnSuccess : true} , explicitButtonDisable : true , settingQuest : false})
+                this.setState({Quest : {title : "" , options : ['','']} , ...{addOnSuccess : true} , explicitButtonDisable : true , settingQuest : false})
             })
             .catch(error=> console.log('error in answers ans pvt data' + error))
         })
@@ -136,7 +153,16 @@ class Addquest extends Component{
                         </div>
                     </div>
                     <textarea className='question-input' type='text' placeholder='question' name='title' value={this.state.Quest.title} onChange={this.updateInput}/><br/>
-                    <textarea className='option-input' type='text' placeholder = "options (seperated by comma at max 5) op1, op2" name='options' onChange={this.updateInputArrayOptions}/><br/><br/>
+                    <div className = 'options-box-add'>
+                        {
+                            this.state.Quest.options.map((op , index)=>{
+                                return <div key = {index} className = 'option-and-remove'><textarea required={true} value = {this.state.Quest.options[index]} className='option-input' type='text' placeholder = {`option ${index+1}`} name='options' onChange={(e)=>this.updateInputArrayOptions(index , e)}/>
+                                    <button type='button' className = 'remove-option-button' onClick = {()=>this.removeOptionFromButton(index)}>-</button>
+                                </div>
+                            })
+                        }
+                        <button type = 'button' className='add-option-button' onClick={() => this.addOptionFromButton()}> + </button>
+                    </div><br/><br/>
                     
                     <textarea className='tags-input' type='text' placeholder ='tags (seperated by comma) tag1, tag2' name='tags' onChange={this.updateInputArray}/><br/>
                     {

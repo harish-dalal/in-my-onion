@@ -30,7 +30,7 @@
 .question-input{
     border: none;
     border-bottom: 2px solid rgb(71, 71, 71);
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     resize: none;
     height: auto;
     outline: none;
@@ -38,11 +38,16 @@
 }
 
 .option-input{
-    border: none;
-    border-bottom: 2px solid rgb(71, 71, 71);
-    width: auto;
+    width: 100%;
     resize: none;
     outline: none;
+    border : 2px solid grey;
+    border-radius: 20px;
+    height: 25px;
+    line-height: 25px;
+    padding-left: 10px;
+    background-color: #ececec;
+    padding-right: 30px;
 }
 
 .tags-input{
@@ -216,9 +221,56 @@ svg{
 }
 
 .onion-image{
+    position: relative;
     height: 32px;
     width: 32px;
     background-image: url('../../resources/onion.png');
     background-size: contain;
     margin-right: 10px;
+}
+
+.options-box-add{
+    display: flex;
+    flex-direction: column;
+}
+
+.option-and-remove{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.options-box-add .add-option-button{
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    margin-top: 10px;
+    background-color: #c5c5c5;
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    margin-left: 2px;
+    cursor: pointer;
+}
+
+.options-box-add .remove-option-button{
+    position: absolute;
+    right: 10px;
+    padding-bottom: 5px;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background-color: #c5c5c5;
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    margin-right: 10px;
+    cursor: pointer;
 }

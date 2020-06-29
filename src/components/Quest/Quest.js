@@ -240,7 +240,7 @@ class Quest extends Component{
                 </div>
                 <div className = 'add-comment noselect' onClick = {this.addCommentToggle.bind(this)}>Comment</div></div>
                 {this.state.addComment ?
-                    <div><AddComment questId = {this.props.data.questId} type = {'comment'}  commentToggle = {() => this.commentToggle(true)}/><br/></div>
+                    <div><AddComment questId = {this.props.data.questId} type = {'comment'}  Toggle = {() => this.commentToggle(true)}/><br/></div>
                     : null
                 }
                 

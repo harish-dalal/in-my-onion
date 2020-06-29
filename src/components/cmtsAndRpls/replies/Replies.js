@@ -12,6 +12,7 @@ class Replies extends Component{
             replies : [],
             isSignedIn : false,
             user : {},
+            loadingDiv : false,
         }
     }
 
@@ -33,7 +34,7 @@ class Replies extends Component{
                     data.push({...doc.data() , ...{replyId : doc.id}})
                 }
             })
-            this.setState({...{replies : data} , ...{userReplies : userdata}})
+            this.setState({...{replies : data} , ...{userReplies : userdata} , ...{loadingDiv : false}})
         })
 
         this.unsubscribeAuthChange = this.context.auth.onAuthStateChanged(usr=>{
@@ -52,7 +53,9 @@ class Replies extends Component{
 
     render(){
         return(
-            <div>
+            this.state.loadingDiv ?
+            <div style ={{width : '100%' , textAlign : 'center'}}>Loading...</div>
+            :<div>
                 <div className = 'single-reply-box'>
                     {
                         this.state.userReplies.map(reply=>{

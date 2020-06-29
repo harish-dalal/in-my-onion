@@ -21,10 +21,11 @@ class Comnt extends Component{
             downVote : 0,
         }
         this.Vote = new Vote(this.context)
+        this.repliesToggle = this.repliesToggle.bind(this)
     }
 
-    repliesToggle(){
-        this.setState(prevState=>({showReplies : !prevState.showReplies}))
+    repliesToggle(value){
+        this.setState(prevState=>({showReplies : !prevState.showReplies || value}))
     }
 
     addReplyToggle(){
@@ -88,6 +89,11 @@ class Comnt extends Component{
         })
     }
 
+    componentWillUnmount(){
+        this.unsubscribeUp();
+        this.unsubscribedown();
+    }
+
     render(){
         const Date = this.props.data.timeStamp.toDate().toString().split(' ')
         return(
@@ -110,12 +116,12 @@ class Comnt extends Component{
                     <svg width="20px" height="20px" onClick={() =>this.vote.upVote('Comment' , this.props.signed ? this.context.auth.currentUser.uid : null , this.props.data.commentId)} viewBox="0 0 24 24"><g id="upvote" className={'icon-svg'+ (this.props.signed && this.state.upVoted ? ' upvoted' : '')}><polygon points="12 4 3 15 9 15 9 20 15 20 15 15 21 15"></polygon></g></svg>
                     <p>{this.state.upVote - this.state.downVote}</p>
                     <svg width="20px" height="20px" onClick={() =>this.vote.downVote('Comment' , this.props.signed ? this.context.auth.currentUser.uid : null , this.props.data.commentId)}viewBox="0 0 24 24"><g id="downvote" className={'icon-svg'+ (this.props.signed && this.state.downVoted ? ' downvoted' : '')}><polygon transform="translate(12.000000, 12.000000) rotate(-180.000000) translate(-12.000000, -12.000000) " points="12 4 3 15 9 15 9 20 15 20 15 15 21 15"></polygon></g></svg>
-                    <div className = 'view-replies noselect' onClick = {this.repliesToggle.bind(this)}>{this.state.showReplies ? 'Hide ' : 'View '}{this.props.data.totalReplies} replies</div>
+                    <div className = 'view-replies noselect' onClick = {()=>this.repliesToggle(false)}>{this.state.showReplies ? 'Hide ' : 'View '}{this.props.data.totalReplies} replies</div>
                     <div className = 'reply noselect' onClick = {this.addReplyToggle.bind(this)}>Reply</div>
                 </div>
                 
                 {this.state.addReply ?
-                    <div><AddComment questId = {this.props.questId} commentId = {this.props.data.commentId} type = {'reply'}/><br/></div>
+                    <div><AddComment questId = {this.props.questId} commentId = {this.props.data.commentId} type = {'reply'} Toggle = {() => this.repliesToggle(true)}/><br/></div>
                     : null
                 }
                 {this.state.showReplies ? 
