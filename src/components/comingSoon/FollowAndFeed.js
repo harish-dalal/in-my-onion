@@ -21,7 +21,7 @@ const FollowAndFeed =()=>{
 
                 </div>
             </div>
-            <small>© Copyright 2020, InMyOnion</small>
+            <small>© Copyright 2020, InmyOnion<br/> Developer Harish @zybnet</small>
         </div>  
     )
 }

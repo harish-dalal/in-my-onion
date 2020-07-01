@@ -39,9 +39,9 @@ class Footer extends Component{
     render(){
         return(
             <div className = 'footer-bar noselect' style = {this.state.displayFoot ? {} : {height : 0}}>
-                <Link to = './' className = {'home-tab margin-tab' +( this.props.location.pathname === '/' ? ' active-tab' : '') }>Home</Link>
-                <Link to = './MyQuestHome' className = {'my-quest-tab margin-tab' +( this.props.location.pathname === '/MyQuestHome' ? ' active-tab' : '')}>My quest</Link>
-                <Link to = './Bookmarked' className = {'saved-tab margin-tab' +( this.props.location.pathname === '/Bookmarked' ? ' active-tab' : '')}>Saved</Link>
+                <Link to = '/' className = {'home-tab margin-tab' +( this.props.location.pathname === '/' ? ' active-tab' : '') }>Home</Link>
+                <Link to = '/MyQuestHome' className = {'my-quest-tab margin-tab' +( this.props.location.pathname === '/MyQuestHome' ? ' active-tab' : '')}>My quest</Link>
+                <Link to = '/Bookmarked' className = {'saved-tab margin-tab' +( this.props.location.pathname === '/Bookmarked' ? ' active-tab' : '')}>Saved</Link>
             </div>
         )
     }

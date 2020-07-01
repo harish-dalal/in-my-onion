@@ -8,9 +8,11 @@ import MyQuestHome from '../myQuestHome/MyQuestHome'
 import './home.css'
 
 class Home extends Component{
-    constructor (){
-        super()
+    constructor (props){
+        super(props)        
+        // props => URL(link from url)
         this.state = {
+            questUrl : null,
             quest : [],
             isSignedIn : false,
             user : {},
@@ -31,6 +33,17 @@ class Home extends Component{
         if(typeof this.state.lastdoc === 'undefined') this.setState({loadingUiBottom : false})
     }
 
+    getRequiredQuest(){
+        this.context.db.collection('Quest').doc(this.props.URL.toString()).get()
+        .then(snap=>{
+            let data = {...snap.data() , ...{questId : snap.id}}
+            if(typeof data != 'undefined'){
+                this.setState({questUrl : data})
+            }
+            else this.setState({questUrl : null})
+        }).catch(err=>console.log('error while fetching '+err))
+    }
+
     getQuest(scroll){
         let data;
         let ref;
@@ -48,7 +61,7 @@ class Home extends Component{
             this.setState((prevState) => ({quest : prevState.quest.concat(data) , getmoredata : true , lastdoc : snap.docs[snap.docs.length - 1]}))
             if(this.state.quest.length === 0){ 
                 console.log('need to refresh')
-                alert('reload internet error')
+                alert('internet error')
                 window.location.reload()
             }
             
@@ -77,6 +90,7 @@ class Home extends Component{
                     this.setState({isSignedIn : false , user : usr});
                 }
         })
+        if(this.props.URL != null) this.getRequiredQuest()
         this.getQuest(false);
         
     }
@@ -114,6 +128,11 @@ class Home extends Component{
                     {
                         this.state.isSignedIn ? null : <div className = 'Signin-box-text'>Sign in to view onions and adding quest</div>
                     }
+                    {
+                        this.state.questUrl!=null?
+                        <div><Quest data = {this.state.questUrl} key = {this.state.questUrl.questId} signed = {this.state.isSignedIn} bookmarked = {this.state.bookmarks.hasOwnProperty(this.state.questUrl.questId)} funcForBookMarkTab = {()=>console.log(this.state.questUrl.questId)} deleteMyQuest = {false}/><br/><br/>Other Quests<hr/></div>
+                        :null
+                    }
                     {this.state.quest.map(qu =>{
                         return(
                             <Quest data = {qu} key = {qu.questId} signed = {this.state.isSignedIn} bookmarked = {this.state.bookmarks.hasOwnProperty(qu.questId)} funcForBookMarkTab = {()=>console.log(qu.questId)} deleteMyQuest = {false}/>
@@ -122,7 +141,7 @@ class Home extends Component{
                     <div style = {{color:'#929292' , marginTop : '5px'}}>
                         {this.state.loadingUiBottom ?
                             <div>Loading...</div>:
-                            <div>That's it add questions to fill the database</div>    
+                            <div>That's it, add questions to fill the database</div>    
                         }
                     </div>
                 </div>:
@@ -132,8 +151,8 @@ class Home extends Component{
                 }
                 <div className = 'add-question-section'>
                     <Addquest/>
-                    <div className = 'show-myquest-toggle' onClick = {()=>this.setState((prevState) => ({showMyQuestHome : !prevState.showMyQuestHome}))}>My questions</div>
-                    {this.state.showMyQuestHome ? <MyQuestHome className = 'Myquesthome'/> : null}
+                    <div className = 'show-myquest-toggle noselect' onClick = {()=>this.setState((prevState) => ({showMyQuestHome : !prevState.showMyQuestHome}))}>My questions</div>
+                    {this.state.showMyQuestHome && this.state.isSignedIn ? <MyQuestHome className = 'Myquesthome'/> : null}
                 </div>
             </div>
 

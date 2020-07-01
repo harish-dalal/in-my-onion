@@ -7,6 +7,7 @@ import Addquest from './components/addQuestion/Addquest'
 import Signup from './pages/signup'
 import BookmarkHome from './components/bookmarkHome/BookmarkHome'
 import MyQuestHome from './components/myQuestHome/MyQuestHome'
+import QuestView from './components/QuestView/QuestView'
 import './App.css';
 
 class App extends Component {
@@ -26,11 +27,12 @@ class App extends Component {
 				<Navbar/>
 				<div className='home-body'> 
 					<Switch>
-					<Route exact path='/' component={Home}/>
+					<Route exact path='/' component={()=><Home URL = {null}/>}/>
 					<Route exact path='/AskQuest' component={Addquest}/>
 					<Route exact path='/signup' component = {Signup}/>
 					<Route exact path='/Bookmarked' component = {BookmarkHome}/>
 					<Route exact path='/MyQuestHome' component = {MyQuestHome}/>
+					<Route path='/Quest/' component = {QuestView}/>
 					</Switch>
 				</div>
 				<Footer/>

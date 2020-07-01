@@ -1,6 +1,6 @@
 .feed-body{
     position: sticky;
-    top: 75px;
+    top: 60px;
     left: 20px;
     margin-left: 60px;
 }
@@ -9,7 +9,7 @@
     background: rgb(231, 231, 231);
     width: 145px;
     box-shadow: 0 1px 2px 0 #00000085;
-    margin-top: 15px;
+    margin-top: 10px;
     padding: 10px;
 }
 
