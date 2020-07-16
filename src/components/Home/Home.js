@@ -5,6 +5,7 @@ import Addquest from '../addQuestion/Addquest'
 import FollowAndFeed from '../comingSoon/FollowAndFeed'
 import Ghost from '../ghostscreen/GhostScreen'
 import MyQuestHome from '../myQuestHome/MyQuestHome'
+import {Helmet} from 'react-helmet'
 import './home.css'
 
 class Home extends Component{
@@ -116,6 +117,7 @@ class Home extends Component{
 
 
     render(){
+        console.log(this.state.user)
         let len = this.state.quest.length
         return(
             <div className = "home-box">
@@ -130,7 +132,15 @@ class Home extends Component{
                     }
                     {
                         this.state.questUrl!=null?
-                        <div><Quest data = {this.state.questUrl} key = {this.state.questUrl.questId} signed = {this.state.isSignedIn} bookmarked = {this.state.bookmarks.hasOwnProperty(this.state.questUrl.questId)} funcForBookMarkTab = {()=>console.log(this.state.questUrl.questId)} deleteMyQuest = {false}/><br/><br/>Other Quests<hr/></div>
+                        <div>
+                            <Helmet>
+                                <link rel='icon' href='/'/>
+                                <meta name = "description" content={this.state.questUrl.title}/>
+                                <meta property = 'og:title' content={'need onions'}/>
+                            </Helmet>
+                            <Quest data = {this.state.questUrl} key = {this.state.questUrl.questId} signed = {this.state.isSignedIn} bookmarked = {this.state.bookmarks.hasOwnProperty(this.state.questUrl.questId)} funcForBookMarkTab = {()=>console.log(this.state.questUrl.questId)} deleteMyQuest = {false}/>
+                            <br/><br/>Other Quests<hr/>
+                        </div>
                         :null
                     }
                     {this.state.quest.map(qu =>{

@@ -53,9 +53,26 @@ class Firebase {
           // Forces account selection even when one account
           // is available.
           prompt: 'select_account'
-        }
-      }],
+        } ,
+      },
+      {
+        provider : firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        customParameters:{
+          prompt : 'select_account'
+        },
+      },
+
+    ],
     }
+  }
+
+  createEmailUser(email , password){
+    this.auth.createUserWithEmailAndPassword(email, password).then(()=>console.log('created')).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    });
   }
 }
  

@@ -48,6 +48,7 @@ class Quest extends Component{
         this.commentToggle = this.commentToggle.bind(this)
         this.vote = new Vote(this.context)
         this.bookmark = new bookmark(this.context)
+        this.noResponse = this.noResponse.bind(this)
     }
 
     commentToggle(value){
@@ -120,8 +121,11 @@ class Quest extends Component{
 
     }
 
-    noResponse(ind){
-        alert('sign in for answering')
+    noResponse(user){
+        if(user){
+            alert(`verify your account ${user.email}`)
+        }
+        else alert('sign in for answering')
     }
 
     getAnswer(){
@@ -190,6 +194,7 @@ class Quest extends Component{
 
     componentDidMount(){
         if(this.props.signed){
+            //users signs in getanswer is called no matter whether verified or not for answering would required to verify
             this.getAnswer()
         }
         else{
@@ -269,7 +274,7 @@ class Quest extends Component{
                 <h3>{this.props.data.title}</h3>
 
                 {this.props.data.options.map((on , index) => {
-                    return(<Onion signed = {this.props.signed} onion = {on} ind = {index} key = {index} ans = {this.props.signed ? this.state.index : -1} allAns = {(this.state.viewAnswer && this.props.signed) ? this.state.questData : this.constQuestData} setOnion = {this.props.signed ? this.ansClicked.bind(this) : this.noResponse.bind(this)}/>)
+                    return(<Onion signed = {this.props.signed} onion = {on} ind = {index} key = {index} ans = {this.props.signed ? this.state.index : -1} allAns = {(this.state.viewAnswer && this.props.signed) ? this.state.questData : this.constQuestData} setOnion = {this.props.signed&&this.context.auth.currentUser.emailVerified ? this.ansClicked.bind(this) : this.state.signed && this.context.auth.currentUser.emailVerified ? ()=>this.noResponse(null) : ()=>this.noResponse(this.context.auth.currentUser)}/>)
                 })}
 
 

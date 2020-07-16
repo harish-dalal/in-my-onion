@@ -70,7 +70,8 @@ class Addquest extends Component{
     addquestion(event){
         event.preventDefault()
         if(!((this.state.Quest.options.length<6 && this.state.Quest.options.every(op=> {return op.trim().length > 0}))&& this.state.Quest.title.trim().length && this.state.explicitButtonDisable)) return;
-        if(this.state.user === null) return;
+        //check whether the user is signed in and verified to submit question
+        if(this.state.user === null || !this.state.user.emailVerified) return;
         this.setState({explicitButtonDisable : false , settingQuest : true})
         this.context.db.collection('Quest')
         .add({...this.state.Quest , ...{totalAnswers : this.state.totalAnswers} , ...{timeStamp : firebase.firestore.Timestamp.now()} , ...{user : {userId : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.uid, userName : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.displayName, userProfilePicUrl : this.state.Quest.isAnonymous ? 'Anon' : this.state.user.photoURL}} , ...{totalComments : 0}})
@@ -166,9 +167,11 @@ class Addquest extends Component{
                     
                     <textarea className='tags-input' type='text' placeholder ='tags (seperated by comma) tag1, tag2' name='tags' onChange={this.updateInputArray}/><br/>
                     {
-                        this.state.user?
+                        this.state.user && this.state.user.emailVerified?
                         <button className={'submit-button'} disabled={!((this.state.Quest.options.length<6 && this.state.Quest.options.every(op=> {return op.trim().length > 0}))&& this.state.Quest.title.trim().length && this.state.explicitButtonDisable)} type = 'submit'>Submit</button>
-                        :<p style = {{margin : 0}}>Sign in to ask</p>
+                        :  this.state.user && this.state.user.emailVerified?
+                            <p style = {{margin : 0}}>Sign in to ask</p>:<p style = {{margin : 0}}>verify account to ask question</p>
+                        
                     }
                 </form>
             </div>
