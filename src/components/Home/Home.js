@@ -117,7 +117,6 @@ class Home extends Component{
 
 
     render(){
-        console.log(this.state.user)
         let len = this.state.quest.length
         return(
             <div className = "home-box">
@@ -129,6 +128,9 @@ class Home extends Component{
                 <div className = "Home">
                     {
                         this.state.isSignedIn ? null : <div className = 'Signin-box-text'>Sign in to view onions and adding quest</div>
+                    }
+                    {
+                        this.state.isSignedIn && (!this.context.auth.currentUser.emailVerified && <div className = 'email-verified-box-text'>Check email for verification link or <span className = 'resend-link' onClick = {()=>{this.context.auth.currentUser.sendEmailVerification().then(alert('email sent')).catch(error=>alert('retry after some time'))}}>resend</span> verification link</div>)
                     }
                     {
                         this.state.questUrl!=null?
@@ -175,6 +177,4 @@ class Home extends Component{
 }
 
 Home.contextType = FirebaseContext
-
-
 export default Home;

@@ -170,7 +170,7 @@ class Quest extends Component{
                 data = data.user
                 let lenData = typeof data !== 'undefined' ? Object.getOwnPropertyNames(data).length : 0;
                 let user = null
-                if(this.props.signed){
+                if(this.props.signed && this.context.auth.currentUser){
                     user = this.context.auth.currentUser.uid
                     if(lenData!==0) if(data.hasOwnProperty(user)) this.setState({upVoted : false , downVoted : true})
                 }

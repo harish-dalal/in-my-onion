@@ -61,7 +61,7 @@ class BookmarkHome extends Component{
 
 
     componentDidMount(){
-        this.context.auth.onAuthStateChanged(usr=>{
+        this.unsubscribeAuth = this.context.auth.onAuthStateChanged(usr=>{
             if(usr!=null) {
                 this.setState({isSignedIn :  true , user : usr});
                 this.gettingBookmarksUser(usr.uid);
@@ -75,6 +75,7 @@ class BookmarkHome extends Component{
     }
 
     componentWillUnmount(){
+        this.unsubscribeAuth()
         if(this.state.isSignedIn){
             // this.unsubscribe();
         }

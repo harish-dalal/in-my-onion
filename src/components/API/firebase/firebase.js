@@ -66,11 +66,33 @@ class Firebase {
     }
   }
 
-  createEmailUser(email , password){
-    this.auth.createUserWithEmailAndPassword(email, password).then(()=>console.log('created')).catch(function(error) {
+  signinWithEmail(email , password){
+    console.log('attemp sign in')
+    this.auth.signInWithEmailAndPassword(email, password).then(()=>window.location.assign('./')).catch(error=>{
+      if(error.code === 'auth/wrong-password'){
+        alert('invalid email password combination')
+      }
+    })
+  }
+
+  createEmailUser(email , password , firstName , lastName){
+    this.auth.createUserWithEmailAndPassword(email, password).then(()=>{
+      const user = this.auth.currentUser
+      user.updateProfile({
+        displayName : firstName + ' ' + lastName
+      }).then(()=>{
+        user.sendEmailVerification()
+        this.db.collection('Users').doc(user.uid).set({
+          userid : user.uid,
+          createdDate : firebase.firestore.Timestamp.now(),
+          userName : user.displayName,
+          userProfilePicUrl : user.photoURL,
+          quest : {},
+        }).then(()=>window.location.assign('./'))
+      })
+    }).catch(function(error) {
       // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
+      console.log(error)
       // ...
     });
   }
