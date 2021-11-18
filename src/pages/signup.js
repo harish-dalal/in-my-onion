@@ -76,6 +76,7 @@ const SignUp = () => {
         </div>
         <br/>
       </div>
+      <p style = {{fontSize : '.8rem' , color : 'grey' , marginRight : '30px' , alignSelf : 'flex-end'}}>Developer Harish</p>
       </div>
     );
 }

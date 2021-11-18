@@ -117,7 +117,7 @@ class Addquest extends Component{
     }
 
     componentWillUnmount(){
-        if(this.state.user) this.unsubscribeAuth()
+        this.unsubscribeAuth()
     }
 
     render(){
