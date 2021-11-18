@@ -49,6 +49,20 @@
     color: #757575;
 }
 
+.resend-link{
+    color : #3b5998;
+    cursor: pointer;
+}
+.resend-link:hover{
+    text-decoration: underline;
+}
+
+.email-verified-box-text{
+    padding: 5px;
+    background-color: #ffcacb;
+    color: #4a4a4a;
+}
+
 @media only screen  and (max-width: 500px){
     .Home{
         width : 95vw;
