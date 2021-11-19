@@ -1,6 +1,7 @@
 import React , {useState, useContext} from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { FirebaseContext } from '../components/API/firebase/'
+import {Link} from 'react-router-dom'
 import '../components/API/firebase/firebaseUI.css'
 import {Input , Button , Divider , TextField , withStyles} from '@material-ui/core'
 import './signup.css'
@@ -8,7 +9,7 @@ import './signup.css'
 
 
 
-const createuser = (firebase) =>{
+const createuser = (firebase , setLoading) =>{
   // console.log(document.getElementById('email-input'))
   
   var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
@@ -23,21 +24,25 @@ const createuser = (firebase) =>{
     alert("password dosen't match");
     return;
   }
-  firebase.createEmailUser(document.getElementById('signup-email').value , document.getElementById('signup-password').value)
+  firebase.createEmailUser(document.getElementById('signup-email').value , document.getElementById('signup-password').value , document.getElementById('signup-firstname').value , document.getElementById('signup-lastname').value , setLoading)
 }
 
 
 const SignUp = () => {
       const [signupDisplay , setSignupDisplay] = useState(false)
+      const [loading , setLoading] = useState(false)
       const firebase = useContext(FirebaseContext)
+
       return (
       <div className = 'sign'>
+        {loading ? <div style ={{width : '100%' , textAlign : 'center'}}>Loading...</div> : <div>
       <div className = 'sign-transparent-div'>
-        <h1>In My Onion</h1>
+      <Link to = '/'><h1>In My Onion</h1></Link>
+        
         <p>A place to share your onion on some weird stuff</p>
         <div style = {{alignSelf:'center' , display : 'flex' , flexDirection : 'row' , justifyContent : 'center'}}>
           <div className = {'container-signup '+ (signupDisplay && 'nodisplay')}>
-            <form className = 'email-password-form' action = 'get' onSubmit = {(event)=>{event.preventDefault(); firebase.signinWithEmail(event.target.email.value , event.target.password.value)}}
+            <form className = 'email-password-form' action = 'get' onSubmit = {(event)=>{event.preventDefault(); setLoading(true); firebase.signinWithEmail(event.target.email.value , event.target.password.value , setLoading)}}
               style = {{display : 'flex' ,flexDirection : 'column'}}>
               <TextField variant = 'outlined' size = 'small' style = {{width : '80%' , backgroundColor : 'none'}} required name = 'email' id = 'email-input' type='email' placeholder = 'email' /><br/>
               <TextField variant = 'outlined' size = 'small' style = {{width : '80%'}} required name = 'password' id = 'password-input' type = 'password' placeholder = 'password'/>
@@ -54,7 +59,7 @@ const SignUp = () => {
             </div>
             <div className = {'container-signup email-signup-container ' +  (signupDisplay && 'display')} >
               <span style={{marginBottom:'20px' , color : 'grey'}}>sign up for new account</span>
-              <form action = 'get' onSubmit = {(event)=>{event.preventDefault(); createuser(firebase)}}>
+              <form action = 'get' onSubmit = {(event)=>{event.preventDefault(); setLoading(true); createuser(firebase , setLoading)}}>
                 <br/>
                 <span>
                   <TextField className = 'signup-name' id = 'signup-firstname' required placeholder = 'first name' size = 'small' variant = 'outlined'/>
@@ -76,7 +81,8 @@ const SignUp = () => {
         </div>
         <br/>
       </div>
-      <p style = {{fontSize : '.8rem' , color : 'grey' , marginRight : '30px' , alignSelf : 'flex-end'}}>Developer Harish</p>
+      <p style = {{fontSize : '.8rem' , color : '#efefef' , marginRight : '30px' , alignSelf : 'flex-end'}}>Developer Harish</p>
+      </div>}
       </div>
     );
 }

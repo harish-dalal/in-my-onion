@@ -66,16 +66,17 @@ class Firebase {
     }
   }
 
-  signinWithEmail(email , password){
+  signinWithEmail(email , password, setLoading){
     console.log('attemp sign in')
     this.auth.signInWithEmailAndPassword(email, password).then(()=>window.location.assign('./')).catch(error=>{
+        setLoading(false)
       if(error.code === 'auth/wrong-password'){
         alert('invalid email password combination')
       }
     })
   }
 
-  createEmailUser(email , password , firstName , lastName){
+  createEmailUser(email , password , firstName , lastName , setLoading){
     this.auth.createUserWithEmailAndPassword(email, password).then(()=>{
       const user = this.auth.currentUser
       user.updateProfile({
@@ -92,6 +93,8 @@ class Firebase {
       })
     }).catch(function(error) {
       // Handle Errors here.
+      setLoading(false)
+      alert(error)
       console.log(error)
       // ...
     });

@@ -113,6 +113,7 @@ class Addquest extends Component{
         this.unsubscribeAuth = this.context.auth.onAuthStateChanged(u=>{
             if(u!=null) this.setState({user :  u});
             else this.setState({user : null});
+            console.log(this.state.user)
         })
     }
 
